@@ -30,18 +30,22 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer>
-  <ion-grid>
-    <ion-row class="ion-align-items-center">
-      <ion-col class="footer-options">
-        Grupos
-      </ion-col>
-      <ion-col class="footer-options">
-        Home
-      </ion-col>
-      <ion-col class="footer-options">
-        Calendário
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-footer>
+<ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="grupos">
+        <ion-icon name="people"></ion-icon>
+        <ion-label>Grupos</ion-label>
+        <ion-badge>6</ion-badge>
+      </ion-tab-button>
+  
+      <ion-tab-button tab="home">
+        <ion-icon name="home"></ion-icon>
+        <ion-label>Home</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button tab="calendario">
+        <ion-icon name="calendar"></ion-icon>
+        <ion-label>Calendário</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
