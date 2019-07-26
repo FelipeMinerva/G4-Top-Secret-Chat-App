@@ -8,10 +8,5 @@ import { Component, OnInit } from '@angular/core';
 export class HomePage implements OnInit {
   constructor() {}
 
-  test = true;
-
-  ngOnInit() {
-    this.test = !this.test;
-  }
-
+  ngOnInit() {}
 }
