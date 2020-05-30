@@ -8,7 +8,9 @@ class Message {
   DateTime timestamp;
   MessageStatus status;
 
-  Message(this.sender, this.text);
+  Message(this.sender, this.text){
+    this.timestamp = DateTime.now();
+  }
 }
 
 

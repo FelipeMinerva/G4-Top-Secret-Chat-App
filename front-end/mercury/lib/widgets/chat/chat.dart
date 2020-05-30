@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mercury/chat/chat_input.dart';
+import 'package:mercury/widgets/chat/chat_input.dart';
 
-import 'chat_history.dart';
-import '../models/message.dart';
+import 'chat_panel.dart';
+import '../../models/message.dart';
 
 class Chat extends StatefulWidget {
   @override
@@ -39,10 +39,10 @@ class _ChatState extends State<Chat> {
       child: Scaffold(
         body: Column(
           children: <Widget>[
-            Expanded(child: ChatHistory(_messages)),
+            Expanded(child: ChatPanel(_messages)),
+            ChatInput(_addNewMessage, _focusNode),
           ],
         ),
-        bottomSheet: ChatInput(_addNewMessage, _focusNode),
       ),
     );
   }

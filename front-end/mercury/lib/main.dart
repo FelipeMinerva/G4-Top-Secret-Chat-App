@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:mercury/widgets/login/login.dart';
 
-import './chat/chat.dart';
+import './widgets/chat/chat.dart';
+import 'models/user.dart';
 
 void main() => runApp(Mercury());
 
 class Mercury extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _MercuryState();
   }
 }
 
 class _MercuryState extends State<Mercury> {
+  User _activeUser;
+
+  void _login(String userName) {
+    setState(() {
+      _activeUser = User(userName);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Mercury"),
+          title: Text(_activeUser != null ? _activeUser.name :"Mercury"),
+          backgroundColor: Colors.indigo,
         ),
-        body: Chat(),
+        body: _activeUser == null ? Login(_login) : Chat(),
       ),
     );
   }
