@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {
-  Function _login;
+  final Function _login;
   final loginController = TextEditingController();
 
   Login(this._login);

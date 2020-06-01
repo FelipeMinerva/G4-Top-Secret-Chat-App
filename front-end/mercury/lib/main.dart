@@ -27,7 +27,24 @@ class _MercuryState extends State<Mercury> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text(_activeUser != null ? _activeUser.name :"Mercury"),
+          title: _activeUser != null
+              ? Row(
+                  children: <Widget>[
+                    Material(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 1.0),
+                        child: IconButton(
+                          icon: Icon(Icons.face),
+                          onPressed: null,
+                          color: Colors.white,
+                        ),
+                      ),
+                      color: Colors.indigo,
+                    ),
+                    Text(_activeUser.name),
+                  ],
+                )
+              : Text('Mercury'),
           backgroundColor: Colors.indigo,
         ),
         body: _activeUser == null ? Login(_login) : Chat(),
