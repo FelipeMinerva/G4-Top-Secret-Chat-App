@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Mercury.Engine.API.Services
 {
-    public class SubscriptionService : Subcribe.SubcribeBase
+    public class SubscriptionService : Subscribe.SubscribeBase
     {
         private readonly ILogger<ChatService> _logger;
         private readonly IUnitOfWork _unitOfWork;
@@ -17,9 +17,30 @@ namespace Mercury.Engine.API.Services
             _unitOfWork = unitOfWork;
         }
 
-        public override async Task<SubReply> Subscribe(SubRequest request, ServerCallContext context)
+        public override async Task Subscribe(
+            SubRequest request,
+            IServerStreamWriter<SubReply> responseStream,
+            ServerCallContext context)
         {
-            return await Task.FromResult(new SubReply() { Message = new Message() { Message_ = "picles" } });
+            var messages = _unitOfWork.TbMessageRepository.GetMessagesByGroup(request.User).ConfigureAwait(false);
+
+            await foreach (var message in messages)
+            {
+                await responseStream.WriteAsync(new SubReply
+                {
+                    Message = new Message()
+                    {
+                        GroupId = message.FkGroup,
+                        Message_ = message.TxMessage,
+                        Timestamp = message.DtTimestamp.ToString(),
+                        User = new User
+                        {
+                            UserId = message.FkUser,
+                            UserName = "Geraltinho"
+                        }
+                    }
+                });
+            }
         }
     }
 }

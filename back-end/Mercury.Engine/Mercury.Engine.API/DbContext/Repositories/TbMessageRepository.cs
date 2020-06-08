@@ -16,8 +16,10 @@ namespace Mercury.Engine.API.DbContext.Repositories
 
         public async IAsyncEnumerable<TbMessage> GetMessagesByGroup(User user)
         {
-            var query = _context.TbMessage
-                // .Where(z => z.FkGroupNavigation.TbUserGroup.Where(x => x.FkUser == user.UserId).Contains(z.FkGroup))
+            var query = _context.TbMessage.Include(z => z.FkGroupNavigation)
+                .Where(z => z.FkGroupNavigation.TbUserGroup
+                    .Where(x => x.FkUser == user.UserId)
+                    .Select(y => y.FkGroup).Contains(z.FkGroup))
                 .AsAsyncEnumerable();
 
             await foreach (var item in query)

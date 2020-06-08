@@ -50,6 +50,7 @@ namespace Mercury.Engine.API
             {
                 endpoints.MapGrpcService<GreeterService>();
                 endpoints.MapGrpcService<ChatService>();
+                endpoints.MapGrpcService<SubscriptionService>();
 
                 endpoints.MapGet("/", async context =>
                 {

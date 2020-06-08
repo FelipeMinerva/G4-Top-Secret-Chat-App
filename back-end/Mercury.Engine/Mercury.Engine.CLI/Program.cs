@@ -1,4 +1,5 @@
-﻿using Grpc.Net.Client;
+﻿using Grpc.Core;
+using Grpc.Net.Client;
 using Mercury.Engine.API.Services;
 using System;
 using System.Net.Http;
@@ -21,11 +22,22 @@ namespace Mercury.Engine.CLI
             //var response = await client.SayHelloAsync(
             //    new HelloRequest { Name = "World" });
 
-            var client = new Chat.ChatClient(channel);
+            //var client = new Chat.ChatClient(channel);
+            //var response = await client.RequestMessageAsync(new MessageRequest() { ChatId = "1" });
 
-            var response = await client.RequestMessageAsync(new MessageRequest() { ChatId = "1" });
+            var client = new Subscribe.SubscribeClient(channel);
+            var response = client.Subscribe(
+                new SubRequest()
+                {
+                    User = new User() { UserId = 1, UserName = "Moninha" }
+                });
 
-            Console.WriteLine(response.Message);
+            await foreach (var message in response.ResponseStream.ReadAllAsync())
+            {
+                Console.WriteLine($"{message.Message.Message_}");
+            }
+
+            Console.WriteLine();
             Console.ReadKey();
         }
     }
