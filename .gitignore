@@ -4,6 +4,10 @@ someOtherfoler/
 bin/
 build/
 debug/
+published/
+
+# Security
+*.pfx
 
 # Visual Studio Code #
 .vscode/

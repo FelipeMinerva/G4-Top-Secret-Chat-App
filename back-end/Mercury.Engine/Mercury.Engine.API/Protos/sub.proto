@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option csharp_namespace = "Mercury.Engine.API.Services";
+
+package sub;
+
+// The subscribe service definition.
+service Subcribe {
+  rpc RequestSub(SubRequest) returns (stream SubReply);
+}
+
+// Object used to create the connection. It carries the user and if that user is active
+message SubRequest {
+    User user = 1;
+    bool active = 2;
+}
+
+// The response message
+message SubReply {
+    Message message = 1;
+}
+
+message User {
+    int32 userId = 1;
+    string userName = 2;
+}
+
+message Message {
+    string message = 1;
+    User user = 2;
+    int32 groupId = 3;
+    string timestamp = 4;
+}
+
+message Close{ }
