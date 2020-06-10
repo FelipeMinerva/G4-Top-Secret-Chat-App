@@ -1,0 +1,43 @@
+version: '3.8'
+
+networks:
+    mercury-dev:
+        driver: bridge
+
+services:
+    mercury-engine:
+        image: mercury-engine
+        depends_on:
+            - mercury-db
+        build:
+            context: ./back-end/Mercury.Engine/Mercury.Engine.API/
+            dockerfile: Dockerfile
+        ports:
+            - 5001:5001
+            - 8000:80
+            - 8001:443
+        environment: 
+            - DB_CONNECTION_STRING="host=mercury-db; port=5432; database=db_mercury; username=minerva; password=morgana"
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            # - ASPNETCORE_Kestrel__Certificates__Default__Password=crypticmorgana
+            # - ASPNETCORE_Kestrel__Certificates__Default__Path=./aspnetapp.pfx
+        networks:
+            - mercury-dev
+
+    mercury-db:
+        image: mercury-db
+        ports:
+            - "5432:5432"
+        restart: always
+        volumes:
+            - db_volume:/var/lib/postgresql/database
+            #- ./db/mercury-db.sql :/docker-entrypoint-initdb.d/mercury-db.sql
+        build: 
+            context: ./db/
+            dockerfile: Dockerfile
+        networks:
+            - mercury-dev
+
+volumes:
+    db_volume:

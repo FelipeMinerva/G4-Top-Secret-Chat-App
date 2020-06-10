@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 
-namespace Mercury.Engine.API
+namespace Mercury.Engine.API.Services
 {
     public class GreeterService : Greeter.GreeterBase
     {
