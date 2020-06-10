@@ -32,9 +32,9 @@ namespace Mercury.Engine.CLI
                     User = new User() { UserId = 1, UserName = "Moninha" }
                 });
 
-            await foreach (var message in response.ResponseStream.ReadAllAsync())
+            await foreach (var message  in response.ResponseStream.ReadAllAsync())
             {
-                Console.WriteLine($"{message.Message.Message_}");
+                Console.WriteLine($"{message.Message.User.UserName}: {message.Message.Message_}");
             }
 
             Console.WriteLine();

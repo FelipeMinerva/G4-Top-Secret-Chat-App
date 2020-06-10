@@ -34,7 +34,7 @@ namespace Mercury.Engine.API.DbContext
         {
 
             modelBuilder.ApplyConfiguration(new TbGroupMapping());
-            modelBuilder.ApplyConfiguration(new TbUserGroupMapping());
+            modelBuilder.ApplyConfiguration(new TbUserMapping());
             modelBuilder.ApplyConfiguration(new TbUserGroupMapping());
             modelBuilder.ApplyConfiguration(new TbMessageMapping());
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,12 +15,25 @@ namespace Mercury.Engine.API.DbContext.Repositories
         {
         }
 
-        public async IAsyncEnumerable<TbMessage> GetMessagesByGroup(User user)
+        public async IAsyncEnumerable<Message> GetMessagesByUser(User user)
         {
-            var query = _context.TbMessage.Include(z => z.FkGroupNavigation)
-                .Where(z => z.FkGroupNavigation.TbUserGroup
+            var query = _context.TbMessage
+                .Include(z => z.FkGroupNavigation)
+                .Include(z => z.FkUserNavigation)
+                .Where(t => t.FkGroupNavigation.TbUserGroup
                     .Where(x => x.FkUser == user.UserId)
-                    .Select(y => y.FkGroup).Contains(z.FkGroup))
+                    .Select(y => y.FkGroup).Contains(t.FkGroup))
+                .Select(e => new Message()
+                {
+                    GroupId = e.FkGroup,
+                    Message_ = e.TxMessage,
+                    Timestamp = DateTime.Now.ToString(),
+                    User = new User
+                    {
+                        UserId = e.FkUser,
+                        UserName = e.FkUserNavigation.NmUserName
+                    }
+                })
                 .AsAsyncEnumerable();
 
             await foreach (var item in query)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mercury.Engine.API.DbContext.Repositories.RepositoriesInterfaces;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Mercury.Engine.API.DbContext.Repositories
 {
@@ -9,12 +10,9 @@ namespace Mercury.Engine.API.DbContext.Repositories
     {
         private protected readonly DbMercuryContext _context;
 
-        public BaseRepository(DbMercuryContext context)
-        {
-            _context = context;
-        }
+        public BaseRepository(DbMercuryContext context) => _context = context;
 
-        public async ValueTask<T> Find(int id) => await _context.Set<T>().FindAsync(id).ConfigureAwait(false);
+        public ValueTask<T> Find(int id) => _context.Set<T>().FindAsync(id);
 
         public async IAsyncEnumerable<T> List()
         {
@@ -24,7 +22,7 @@ namespace Mercury.Engine.API.DbContext.Repositories
                 yield return item;
         }
 
-        public async ValueTask Add(T item) => await _context.Set<T>().AddAsync(item).ConfigureAwait(false);
+        public ValueTask<EntityEntry<T>> Add(T item) => _context.Set<T>().AddAsync(item);
 
         public void Remove(T item) => _context.Set<T>().Remove(item);
 

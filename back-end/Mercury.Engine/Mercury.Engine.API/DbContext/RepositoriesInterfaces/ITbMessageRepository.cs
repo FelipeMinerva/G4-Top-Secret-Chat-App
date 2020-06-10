@@ -6,6 +6,6 @@ namespace Mercury.Engine.API.DbContext.Repositories.RepositoriesInterfaces
 {
     public interface ITbMessageRepository : IBaseRepository<TbMessage>
     {
-        IAsyncEnumerable<TbMessage> GetMessagesByGroup(User user);
+        IAsyncEnumerable<Message> GetMessagesByUser(User user);
     }
 }

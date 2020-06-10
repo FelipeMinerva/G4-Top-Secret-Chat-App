@@ -10,10 +10,7 @@ namespace Mercury.Engine.API.DbContext.Mapping
         public void Configure(EntityTypeBuilder<TbUser> builder)
         {
             builder.Property(e => e.IdUser)
-                .HasColumnName("id_user")
-                .UseHiLo()
-                .ValueGeneratedOnAdd()
-                .IsRequired();
+                .HasColumnName("id_user");
 
             builder.HasKey(e => e.IdUser)
                 .HasName("tb_user_pkey");
