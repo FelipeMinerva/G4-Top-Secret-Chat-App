@@ -4,7 +4,7 @@ option csharp_namespace = "Mercury.Engine.API.Services";
 
 package chat;
 
-// The greeting service definition.
+// The message service definition.
 service Chat {
   // Sends a greeting
   rpc RequestMessage (MessageRequest) returns (MessageReply);

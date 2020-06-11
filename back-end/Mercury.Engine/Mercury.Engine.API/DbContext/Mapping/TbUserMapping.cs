@@ -22,6 +22,15 @@ namespace Mercury.Engine.API.DbContext.Mapping
                 .IsRequired()
                 .HasColumnName("nm_user_name")
                 .HasMaxLength(255);
+
+            builder.Property(e => e.TxEmail)
+            .IsRequired()
+            .HasColumnName("tx_email")
+            .HasMaxLength(255);
+
+            builder.HasIndex(e => e.TxEmail)
+                .HasName("IX_EMAIL")
+                .IsUnique();
         }
     }
 }
