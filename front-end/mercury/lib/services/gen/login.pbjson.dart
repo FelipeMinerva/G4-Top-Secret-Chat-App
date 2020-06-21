@@ -20,15 +20,3 @@ const LoginReply$json = const {
   ],
 };
 
-const LoginServiceBase$json = const {
-  '1': 'Login',
-  '2': const [
-    const {'1': 'RequestLogin', '2': '.login.LoginRequest', '3': '.login.LoginReply'},
-  ],
-};
-
-const LoginServiceBase$messageJson = const {
-  '.login.LoginRequest': LoginRequest$json,
-  '.login.LoginReply': LoginReply$json,
-};
-

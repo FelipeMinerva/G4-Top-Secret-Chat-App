@@ -5,7 +5,6 @@
 // @dart = 2.3
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
 
-import 'dart:async' as $async;
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
@@ -80,15 +79,5 @@ class LoginReply extends $pb.GeneratedMessage {
   $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
   void clearUserId() => clearField(1);
-}
-
-class LoginApi {
-  $pb.RpcClient _client;
-  LoginApi(this._client);
-
-  $async.Future<LoginReply> requestLogin($pb.ClientContext ctx, LoginRequest request) {
-    var emptyResponse = LoginReply();
-    return _client.invoke<LoginReply>(ctx, 'Login', 'RequestLogin', request, emptyResponse);
-  }
 }
 

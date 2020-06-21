@@ -59,6 +59,8 @@ namespace Mercury.Engine.API
                 });
             });
 
+            app.UseStatusCodePages();
+
         }
     }
 }

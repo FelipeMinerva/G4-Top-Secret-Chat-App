@@ -16,7 +16,9 @@ namespace Mercury.Engine.CLI
             //httpHandler.ServerCertificateCustomValidationCallback =
             //    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
 
+            //var channel = GrpcChannel.ForAddress(new UriBuilder("https://127.0.0.1:5001").Uri);
             var channel = GrpcChannel.ForAddress("https://localhost:5001");
+            //var channel = GrpcChannel.ForAddress("192.168.15.16:5001");
             //var client = new Greeter.GreeterClient(channel);
 
             //var response = await client.SayHelloAsync(
@@ -27,7 +29,10 @@ namespace Mercury.Engine.CLI
 
             //Login test
             var loginClient = new Login.LoginClient(channel);
-            var loginResponse = loginClient.RequestLogin(new LoginRequest() { UserEmail = "carolininha@kitty.com", UserName = "Carolina" });
+            var loginResponse = loginClient.RequestLogin(new LoginRequest() 
+            { 
+                UserEmail = "carolininha@kitty.com", UserName = "Carolina" 
+            });
 
             // Message streaming test
             var subClient = new Subscribe.SubscribeClient(channel);

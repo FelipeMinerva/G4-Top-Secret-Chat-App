@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {
   final Function _login;
-  final loginController = TextEditingController();
+  final _userNameController = TextEditingController();
+  final _userEmailController = TextEditingController();
 
   Login(this._login);
 
@@ -19,17 +20,24 @@ class Login extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               TextField(
-                controller: loginController,
+                controller: _userNameController,
                 decoration: InputDecoration.collapsed(
                   border: InputBorder.none,
                   hintText: 'Enter your name',
                 ),
                 autofocus: true,
-                onSubmitted: (text) => _login(text),
+              ),
+              TextField(
+                controller: _userEmailController,
+                decoration: InputDecoration.collapsed(
+                  border: InputBorder.none,
+                  hintText: 'Enter your email',
+                ),
               ),
               RaisedButton(
                 child: Text('Sign in'),
-                onPressed: () => _login(loginController.text),
+                onPressed: () =>
+                    _login(_userNameController.text, _userEmailController.text),
                 color: Colors.indigo,
                 textColor: Colors.white,
               ),

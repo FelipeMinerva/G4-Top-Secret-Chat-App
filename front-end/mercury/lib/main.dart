@@ -3,6 +3,7 @@ import 'package:mercury/widgets/login/login.dart';
 
 import './widgets/chat/chat.dart';
 import 'models/user.dart';
+import 'services/login_service.dart';
 
 void main() => runApp(Mercury());
 
@@ -16,9 +17,12 @@ class Mercury extends StatefulWidget {
 class _MercuryState extends State<Mercury> {
   User _activeUser;
 
-  void _login(String userName) {
+  Future<void> _login(String userName, String userEmail) async {
+    var request = await LoginService().requestLogin(userName, userEmail);
+
     setState(() {
-      _activeUser = User(userName);
+      _activeUser = User.withEmail(userName, userEmail);
+      _activeUser.userId = request;
     });
   }
 
@@ -41,7 +45,7 @@ class _MercuryState extends State<Mercury> {
                       ),
                       color: Colors.indigo,
                     ),
-                    Text(_activeUser.name),
+                    Text(_activeUser.name + (_activeUser.userId ?? '').toString()),
                   ],
                 )
               : Text('Mercury'),
