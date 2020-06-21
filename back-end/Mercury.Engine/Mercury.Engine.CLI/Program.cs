@@ -16,7 +16,9 @@ namespace Mercury.Engine.CLI
             //httpHandler.ServerCertificateCustomValidationCallback =
             //    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
 
+            //var channel = GrpcChannel.ForAddress(new UriBuilder("https://127.0.0.1:5001").Uri);
             var channel = GrpcChannel.ForAddress("https://localhost:5001");
+            //var channel = GrpcChannel.ForAddress("192.168.15.16:5001");
             //var client = new Greeter.GreeterClient(channel);
 
             //var response = await client.SayHelloAsync(
@@ -25,19 +27,28 @@ namespace Mercury.Engine.CLI
             //var client = new Chat.ChatClient(channel);
             //var response = await client.RequestMessageAsync(new MessageRequest() { ChatId = "1" });
 
-            var client = new Subscribe.SubscribeClient(channel);
-            var response = client.Subscribe(
+            //Login test
+            var loginClient = new Login.LoginClient(channel);
+            var loginResponse = loginClient.RequestLogin(new LoginRequest() 
+            { 
+                UserEmail = "carolininha@kitty.com", UserName = "Carolina" 
+            });
+
+            // Message streaming test
+            var subClient = new Subscribe.SubscribeClient(channel);
+            var response = subClient.Subscribe(
                 new SubRequest()
                 {
-                    User = new User() { UserId = 1, UserName = "Moninha" }
+                    User = new User() { UserId = loginResponse.UserId, UserName = "Carolina" }
                 });
 
-            await foreach (var message  in response.ResponseStream.ReadAllAsync())
+            await foreach (var message in response.ResponseStream.ReadAllAsync())
             {
                 Console.WriteLine($"{message.Message.User.UserName}: {message.Message.Message_}");
             }
 
-            Console.WriteLine();
+
+            //Console.WriteLine(response.UserId);
             Console.ReadKey();
         }
     }

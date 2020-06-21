@@ -8,6 +8,7 @@ published/
 
 # Security
 *.pfx
+*.cer
 
 # Visual Studio Code #
 .vscode/
