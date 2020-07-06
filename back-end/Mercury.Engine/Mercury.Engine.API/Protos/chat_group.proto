@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "Mercury.Engine.API.Services";
+
+package chat_group;
+
+service ChatGroup{
+    rpc Create (CreateRequest) returns (CreateReply);
+}
+
+message CreateRequest{
+    repeated int32 usersId = 1;
+}
+
+message CreateReply {
+    int32 groupId = 1;
+ }
+
+

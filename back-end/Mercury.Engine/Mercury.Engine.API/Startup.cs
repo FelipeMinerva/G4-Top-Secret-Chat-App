@@ -48,9 +48,7 @@ namespace Mercury.Engine.API
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>();
-                endpoints.MapGrpcService<ChatService>();
-                endpoints.MapGrpcService<SubscriptionService>();
+                endpoints.MapGrpcService<MessageService>();
                 endpoints.MapGrpcService<LoginService>();
 
                 endpoints.MapGet("/", async context =>

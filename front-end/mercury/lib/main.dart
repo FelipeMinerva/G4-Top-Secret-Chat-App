@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:mercury/providers/user_provider.dart';
+import 'package:mercury/widgets/chat/chat.dart';
 import 'package:mercury/widgets/login/login.dart';
+import 'package:provider/provider.dart';
 
-import './widgets/chat/chat.dart';
 import 'models/user.dart';
-import 'services/login_service.dart';
 
-void main() => runApp(Mercury());
+void main() => runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => UserProvider(),
+        ),
+      ],
+      child: Mercury(),
+    ));
 
 class Mercury extends StatefulWidget {
   @override
@@ -16,15 +24,6 @@ class Mercury extends StatefulWidget {
 
 class _MercuryState extends State<Mercury> {
   User _activeUser;
-
-  Future<void> _login(String userName, String userEmail) async {
-    var request = await LoginService().requestLogin(userName, userEmail);
-
-    setState(() {
-      _activeUser = User.withEmail(userName, userEmail);
-      _activeUser.userId = request;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +44,17 @@ class _MercuryState extends State<Mercury> {
                       ),
                       color: Colors.indigo,
                     ),
-                    Text(_activeUser.name + (_activeUser.userId ?? '').toString()),
+                    Text(_activeUser.name),
                   ],
                 )
               : Text('Mercury'),
           backgroundColor: Colors.indigo,
         ),
-        body: _activeUser == null ? Login(_login) : Chat(),
+        body: Login(),
       ),
+      routes: {
+        'messages': (context) => Chat()
+      },
     );
   }
 }

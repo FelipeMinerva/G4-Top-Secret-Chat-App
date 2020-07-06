@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:mercury/providers/messages_provider.dart';
+import 'package:mercury/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/message.dart';
 import '../../models/user.dart';
 
 class ChatInput extends StatefulWidget {
-  final Function _send;
   final FocusNode _focusNode;
 
-  ChatInput(this._send, this._focusNode);
+  ChatInput(this._focusNode);
 
   @override
-  _ChatInputState createState() => _ChatInputState(_send, _focusNode);
+  _ChatInputState createState() => _ChatInputState(_focusNode);
 }
 
 class _ChatInputState extends State<ChatInput> {
-  final Function _send;
   final FocusNode _focusNode;
   final inputController = TextEditingController();
   bool _isSendButtonDisabled;
 
-  _ChatInputState(this._send, this._focusNode);
+  _ChatInputState(this._focusNode);
 
   @override
   void dispose() {
@@ -42,9 +43,13 @@ class _ChatInputState extends State<ChatInput> {
     });
   }
 
-  void _onSend(String messageText) {
+  void _onSend({String messageText, BuildContext context}) {
+    final messagesState = Provider.of<MessagesProvider>(context);
+    final userState = Provider.of<UserProvider>(context);
+
     if (messageText.trim() != '') {
-      _send(Message(User('Felipinho'), messageText));
+      messagesState
+          .addMessage(Message(User.fromModel(userState.user), messageText));
       inputController.clear();
     }
   }
@@ -84,7 +89,10 @@ class _ChatInputState extends State<ChatInput> {
                 maxLines: null,
 
                 // Functional setup
-                onSubmitted: (z) => _onSend(z),
+                onSubmitted: (text) => _onSend(
+                  context: context,
+                  messageText: text,
+                ),
                 cursorColor: Colors.indigo,
                 controller: inputController,
                 decoration: InputDecoration.collapsed(
@@ -103,7 +111,10 @@ class _ChatInputState extends State<ChatInput> {
                 icon: Icon(Icons.send),
                 onPressed: () => _isSendButtonDisabled
                     ? null
-                    : _onSend(inputController.text),
+                    : _onSend(
+                        context: context,
+                        messageText: inputController.text,
+                      ),
                 color: Colors.indigo,
               ),
             ),

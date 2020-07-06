@@ -1,11 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:mercury/models/user.dart';
+import 'package:mercury/providers/user_provider.dart';
+import 'package:mercury/services/login_service.dart';
+import 'package:mercury/widgets/chat/chat.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatelessWidget {
-  final Function _login;
   final _userNameController = TextEditingController();
   final _userEmailController = TextEditingController();
 
-  Login(this._login);
+  Future<void> _login({
+    String userName,
+    String userEmail,
+    BuildContext context,
+  }) async {
+    final _userState = Provider.of<UserProvider>(context, listen: false);
+    final _userId = await LoginService().requestLogin(userName, userEmail);
+
+    _userState.user = User(
+      name: _userNameController.text,
+      userId: _userId,
+      email: _userEmailController.text,
+    );
+
+    _navigateFoward(context);
+  }
+
+  void _navigateFoward(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => Chat(),
+      fullscreenDialog: true,
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +62,13 @@ class Login extends StatelessWidget {
               ),
               RaisedButton(
                 child: Text('Sign in'),
-                onPressed: () =>
-                    _login(_userNameController.text, _userEmailController.text),
+                onPressed: () => _login(
+                    userName: _userNameController.text,
+                    userEmail: _userEmailController.text,
+                    context: context),
                 color: Colors.indigo,
                 textColor: Colors.white,
               ),
-              // Material(
-              //   child: Container(
-              //     margin: EdgeInsets.symmetric(horizontal: 1.0),
-              //     child: IconButton(
-              //       icon: Icon(Icons.arrow_forward),
-              //       onPressed: null,
-              //       color: Colors.indigo,
-              //     ),
-              //   ),
-              // )
             ],
           ),
         ),

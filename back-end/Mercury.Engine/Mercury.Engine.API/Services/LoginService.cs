@@ -8,10 +8,10 @@ namespace Mercury.Engine.API.Services
 {
     public class LoginService : Login.LoginBase
     {
-        private readonly ILogger<ChatService> _logger;
+        private readonly ILogger<LoginService> _logger;
         private readonly IUnitOfWork _unitOfWork;
 
-        public LoginService(ILogger<ChatService> logger, IUnitOfWork unitOfWork)
+        public LoginService(ILogger<LoginService> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;

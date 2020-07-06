@@ -6,7 +6,6 @@ package login;
 
 // The message service definition.
 service Login {
-    // Sends a greeting
     rpc RequestLogin (LoginRequest) returns (LoginReply);
   }
   
