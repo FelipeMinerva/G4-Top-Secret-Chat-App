@@ -1,16 +1,16 @@
 import 'package:flutter/foundation.dart';
 
-import '../models/user.dart';
+import '../models/user_view_model.dart';
 
 class UserProvider with ChangeNotifier {
-  User _user;
+  UserViewModel _user;
 
-  User get user{
-    return User.fromModel(_user);
+  UserViewModel get user{
+    return UserViewModel.fromModel(_user);
   }
 
-  set user(User user){
-    _user = User.fromModel(user);
+  set user(UserViewModel user){
+    _user = UserViewModel.fromModel(user);
     notifyListeners();
   }
 }

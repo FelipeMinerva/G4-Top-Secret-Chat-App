@@ -1,13 +1,13 @@
 import 'package:mercury/services/service_base.dart';
 
-import 'gen/sub.pbgrpc.dart';
+import 'gen/chat.pbgrpc.dart';
 
-class MessageService extends ServiceBase {
-  Stream<SubReply> requestMessages(User user) async* {
+class ChatService extends ServiceBase {
+  Stream<SubscriptionReply> requestMessages(int userId) async* {
     final _clientChannel = await setup.clientChannel;
-    final client = SubscribeClient(_clientChannel);
+    final client = ChatClient(_clientChannel);
 
-    var request = SubRequest()..user = user;
+    var request = SubscriptionRequest()..userId = userId;
 
     try {
       await for (var message in client.subscribe(request)) {

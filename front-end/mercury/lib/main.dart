@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:mercury/providers/groups_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
 import 'package:mercury/widgets/chat/chat.dart';
 import 'package:mercury/widgets/login/login.dart';
 import 'package:provider/provider.dart';
 
-import 'models/user.dart';
+import 'models/user_view_model.dart';
 
 void main() => runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(
           create: (context) => UserProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => GroupsProvider(),
+        )
       ],
       child: Mercury(),
     ));
@@ -23,7 +27,7 @@ class Mercury extends StatefulWidget {
 }
 
 class _MercuryState extends State<Mercury> {
-  User _activeUser;
+  UserViewModel _activeUser;
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +56,7 @@ class _MercuryState extends State<Mercury> {
         ),
         body: Login(),
       ),
-      routes: {
-        'messages': (context) => Chat()
-      },
+      routes: {'chat': (context) => Chat()},
     );
   }
 }

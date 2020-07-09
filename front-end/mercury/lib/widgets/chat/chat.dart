@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mercury/providers/messages_provider.dart';
+import 'package:mercury/providers/user_provider.dart';
 import 'package:mercury/widgets/chat/chat_input.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +28,8 @@ class _ChatState extends State<Chat> {
 
   @override
   Widget build(BuildContext context) {
+    final userState = Provider.of<UserProvider>(context);
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -36,6 +39,10 @@ class _ChatState extends State<Chat> {
       child: Container(
         width: double.infinity,
         child: Scaffold(
+          appBar: AppBar(
+            title: Text(userState.user.name),
+          backgroundColor: Colors.indigo,
+          ),
           body: Column(
             children: <Widget>[
               Expanded(child: ChatPanel()),

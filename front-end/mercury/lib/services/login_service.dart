@@ -4,7 +4,8 @@ import 'package:mercury/services/service_base.dart';
 import 'gen/login.pbgrpc.dart';
 
 class LoginService extends ServiceBase {
-  Future<int> requestLogin(String userName, String userEmail) async {
+  Future<int> requestLogin(
+      String userName, String userEmail, String userTag) async {
     final clientChannel = await setup.clientChannel;
 
     final client = LoginClient(
@@ -16,7 +17,8 @@ class LoginService extends ServiceBase {
 
     var request = LoginRequest()
       ..userEmail = userEmail
-      ..userName = userName;
+      ..userName = userName
+      ..userTag = userTag;
 
     try {
       print('opening connection');

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mercury/models/message_view_model.dart';
 import 'package:mercury/providers/messages_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/message.dart';
-import '../../models/user.dart';
+import '../../models/message_view_model.dart';
+import '../../models/user_view_model.dart';
 
 class ChatInput extends StatefulWidget {
   final FocusNode _focusNode;
@@ -49,7 +50,7 @@ class _ChatInputState extends State<ChatInput> {
 
     if (messageText.trim() != '') {
       messagesState
-          .addMessage(Message(User.fromModel(userState.user), messageText));
+          .addMessage(MessageViewModel(UserViewModel.fromModel(userState.user), messageText));
       inputController.clear();
     }
   }

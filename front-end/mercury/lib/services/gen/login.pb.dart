@@ -13,6 +13,7 @@ class LoginRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('LoginRequest', package: const $pb.PackageName('login'), createEmptyInstance: create)
     ..aOS(1, 'userEmail', protoName: 'userEmail')
     ..aOS(2, 'userName', protoName: 'userName')
+    ..aOS(3, 'userTag', protoName: 'userTag')
     ..hasRequiredFields = false
   ;
 
@@ -48,6 +49,15 @@ class LoginRequest extends $pb.GeneratedMessage {
   $core.bool hasUserName() => $_has(1);
   @$pb.TagNumber(2)
   void clearUserName() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get userTag => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set userTag($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasUserTag() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearUserTag() => clearField(3);
 }
 
 class LoginReply extends $pb.GeneratedMessage {

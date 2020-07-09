@@ -7,12 +7,13 @@ package login;
 // The message service definition.
 service Login {
     rpc RequestLogin (LoginRequest) returns (LoginReply);
-  }
+ }
   
   // The request message containing the user's name.
   message LoginRequest {
     string userEmail = 1;
     string userName = 2;
+    string userTag = 3;
   }
   
   // The response message containing the greetings.

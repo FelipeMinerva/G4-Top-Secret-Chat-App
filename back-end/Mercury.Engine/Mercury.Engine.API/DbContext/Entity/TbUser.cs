@@ -16,6 +16,7 @@ namespace Mercury.Engine.API.DbContext.Entity
         public int IdUser { get; set; }
         public string NmUserName { get; set; }
         public string TxEmail { get; set; }
+        public string TxUserTag { get; set; }
 
         public virtual ICollection<TbUserGroup> TbUserGroup { get; set; }
         public virtual ICollection<TbMessage> TbMessage { get; set; }

@@ -26,7 +26,8 @@ namespace Mercury.Engine.API.Services
                 user = (await _unitOfWork.TbUserRepository.Add(new TbUser
                 {
                     NmUserName = request.UserName,
-                    TxEmail = request.UserEmail
+                    TxEmail = request.UserEmail,
+                    TxUserTag = request.UserTag
                 })
                     .ConfigureAwait(false))
                     .Entity;

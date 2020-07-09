@@ -1,26 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:mercury/models/user.dart';
+import 'package:mercury/models/user_view_model.dart';
 import 'package:mercury/providers/user_provider.dart';
 import 'package:mercury/services/login_service.dart';
-import 'package:mercury/widgets/chat/chat.dart';
+import 'package:mercury/widgets/groups/groups.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatelessWidget {
   final _userNameController = TextEditingController();
   final _userEmailController = TextEditingController();
+  final _userTagController = TextEditingController();
 
   Future<void> _login({
     String userName,
     String userEmail,
+    String userTag,
     BuildContext context,
   }) async {
     final _userState = Provider.of<UserProvider>(context, listen: false);
-    final _userId = await LoginService().requestLogin(userName, userEmail);
+    final _userId =
+        await LoginService().requestLogin(userName, userEmail, userTag);
 
-    _userState.user = User(
-      name: _userNameController.text,
+    _userState.user = UserViewModel(
+      name: userName,
       userId: _userId,
-      email: _userEmailController.text,
+      email: userEmail,
+      userTag: userTag
     );
 
     _navigateFoward(context);
@@ -28,8 +32,8 @@ class Login extends StatelessWidget {
 
   void _navigateFoward(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => Chat(),
-      fullscreenDialog: true,
+      builder: (_) => Groups(),
+      fullscreenDialog: false,
     ));
   }
 
@@ -60,11 +64,19 @@ class Login extends StatelessWidget {
                   hintText: 'Enter your email',
                 ),
               ),
+              TextField(
+                controller: _userTagController,
+                decoration: InputDecoration.collapsed(
+                  border: InputBorder.none,
+                  hintText: 'Enter your tag',
+                ),
+              ),
               RaisedButton(
                 child: Text('Sign in'),
                 onPressed: () => _login(
                     userName: _userNameController.text,
                     userEmail: _userEmailController.text,
+                    userTag: _userTagController.text,
                     context: context),
                 color: Colors.indigo,
                 textColor: Colors.white,

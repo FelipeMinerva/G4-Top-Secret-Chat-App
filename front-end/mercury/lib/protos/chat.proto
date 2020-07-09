@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option csharp_namespace = "Mercury.Engine.API.Services";
+
+package chat;
+
+// The chat service definition.
+service Chat {
+    rpc Subscribe(SubscriptionRequest) returns (stream SubscriptionReply);
+    rpc Push(PushRequest) returns (PushReply);
+}
+
+// Object used to create the connection. It carries the user and if that user is active
+message SubscriptionRequest {
+    int32 userId = 1; 
+    bool active = 2;
+}
+
+// The response message
+message SubscriptionReply {
+    Message message = 1;
+}
+
+message PushRequest{
+    Message message = 1; 
+}
+
+message PushReply{
+    bool acknowledged = 1;
+}
+
+message Message {
+    string text = 1;
+    int32 userId = 2;
+    int32 groupId = 3;
+    string timestamp = 4;
+}
+
+message Close{ }

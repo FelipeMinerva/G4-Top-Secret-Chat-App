@@ -10,6 +10,7 @@ const LoginRequest$json = const {
   '2': const [
     const {'1': 'userEmail', '3': 1, '4': 1, '5': 9, '10': 'userEmail'},
     const {'1': 'userName', '3': 2, '4': 1, '5': 9, '10': 'userName'},
+    const {'1': 'userTag', '3': 3, '4': 1, '5': 9, '10': 'userTag'},
   ],
 };
 

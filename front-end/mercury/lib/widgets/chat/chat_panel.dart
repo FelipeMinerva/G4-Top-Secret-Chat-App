@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mercury/providers/messages_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
-import 'package:mercury/services/gen/sub.pb.dart';
-import 'package:mercury/services/message_service.dart';
+import 'package:mercury/services/chat_service.dart';
 import 'package:provider/provider.dart';
-import 'package:mercury/models/message.dart' as models;
+import 'package:mercury/models/message_view_model.dart' as models;
 
 import './chat_message.dart';
 
@@ -12,12 +11,10 @@ class ChatPanel extends StatelessWidget {
   void _getMessages(BuildContext context, MessagesProvider messagesState) {
     final userState = Provider.of<UserProvider>(context, listen: false);
 
-    var messages = MessageService().requestMessages(User()
-      ..userId = userState.user.userId
-      ..userName = userState.user.name);
+    var messages = ChatService().requestMessages(userState.user.userId);
 
     messagesState.loadMessages(messages
-        .map((reply) => models.Message(userState.user, reply.message.message)));
+        .map((reply) => models.MessageViewModel(userState.user, reply.message.text)));
   }
 
   @override
