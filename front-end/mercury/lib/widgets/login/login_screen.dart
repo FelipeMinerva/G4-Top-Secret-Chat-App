@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:mercury/models/user_view_model.dart';
 import 'package:mercury/providers/user_provider.dart';
 import 'package:mercury/services/login_service.dart';
-import 'package:mercury/widgets/groups/groups.dart';
+import 'package:mercury/widgets/chat/chat_screen.dart';
+import 'package:mercury/widgets/groups/groups_screen.dart';
 import 'package:provider/provider.dart';
 
-class Login extends StatelessWidget {
+class LoginScreen extends StatelessWidget {
+  static const route = '/login';
   final _userNameController = TextEditingController();
   final _userEmailController = TextEditingController();
   final _userTagController = TextEditingController();
@@ -31,16 +33,14 @@ class Login extends StatelessWidget {
   }
 
   void _navigateFoward(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => Groups(),
-      fullscreenDialog: false,
-    ));
+    Navigator.of(context).pushNamed(GroupsScreen.route);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
+    return Scaffold(
+      appBar: AppBar(title: Text('Mercury'), backgroundColor: Colors.indigo,),
+      body: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width * .6,

@@ -16,7 +16,7 @@ class ChatGroupService extends ServiceBase {
       print('Caught error: $e');
     }
 
-    await clientChannel.shutdown();
+    // await clientChannel.shutdown();
     return reply;
   }
 
@@ -35,6 +35,6 @@ class ChatGroupService extends ServiceBase {
     } catch (e) {
       print('Caught error: $e');
     }
-    await clientChannel.shutdown();
+    // await clientChannel.shutdown();
   }
 }

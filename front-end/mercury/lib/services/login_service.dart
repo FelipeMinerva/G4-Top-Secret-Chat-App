@@ -28,7 +28,7 @@ class LoginService extends ServiceBase {
       print('Caught error: $e');
     }
 
-    await clientChannel.shutdown();
+    // await clientChannel.shutdown();
     return -1;
   }
 }

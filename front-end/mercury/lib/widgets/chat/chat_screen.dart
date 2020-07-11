@@ -6,12 +6,14 @@ import 'package:provider/provider.dart';
 
 import 'chat_panel.dart';
 
-class Chat extends StatefulWidget {
+class ChatScreen extends StatefulWidget {
+  static String route = '/chat';
+
   @override
-  _ChatState createState() => _ChatState();
+  _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _ChatState extends State<Chat> {
+class _ChatScreenState extends State<ChatScreen> {
   FocusNode _focusNode;
 
   @override
@@ -41,7 +43,7 @@ class _ChatState extends State<Chat> {
         child: Scaffold(
           appBar: AppBar(
             title: Text(userState.user.name),
-          backgroundColor: Colors.indigo,
+            backgroundColor: Colors.indigo,
           ),
           body: Column(
             children: <Widget>[

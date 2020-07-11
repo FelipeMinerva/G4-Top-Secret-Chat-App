@@ -8,6 +8,7 @@ import 'package:mercury/models/message_view_model.dart' as models;
 import './chat_message.dart';
 
 class ChatPanel extends StatelessWidget {
+
   void _getMessages(BuildContext context, MessagesProvider messagesState) {
     final userState = Provider.of<UserProvider>(context, listen: false);
 

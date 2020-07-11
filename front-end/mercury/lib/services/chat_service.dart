@@ -14,7 +14,7 @@ class ChatService extends ServiceBase {
         print(message.message);
         yield message;
       }
-      await _clientChannel.shutdown();
+      // await _clientChannel.shutdown();
     } catch (e) {
       print('Caught error: $e');
     }

@@ -16,7 +16,7 @@ class UserService extends ServiceBase {
     } catch (e) {
       print(e.toString());
     }
-    await clientChannel.shutdown();
+    // await clientChannel.shutdown();
     return reply;
   }
 }
