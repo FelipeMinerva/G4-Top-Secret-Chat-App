@@ -1,16 +1,13 @@
 import 'package:mercury/enum/message_status.dart';
-import 'package:mercury/models/user_view_model.dart';
 
 class MessageViewModel {
-  UserViewModel sender;
-  UserViewModel recipient;
+  int userId;
   String text;
-  DateTime timestamp;
   MessageStatus status;
+  int groupId;
+  DateTime timestamp;
 
-  MessageViewModel(this.sender, this.text){
+  MessageViewModel({this.userId, this.text, this.status, this.groupId}) {
     this.timestamp = DateTime.now();
   }
 }
-
-

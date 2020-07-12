@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mercury/models/group_view_model.dart';
 import 'package:mercury/providers/groups_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
 import 'package:mercury/services/chat_group_service.dart';
-import 'package:mercury/widgets/groups/group.dart';
 import 'package:mercury/widgets/groups/group_panel.dart';
 import 'package:provider/provider.dart';
 

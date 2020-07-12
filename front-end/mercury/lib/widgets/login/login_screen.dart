@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mercury/models/message_view_model.dart';
 import 'package:mercury/models/user_view_model.dart';
+import 'package:mercury/providers/messages_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
+import 'package:mercury/services/chat_service.dart';
 import 'package:mercury/services/login_service.dart';
-import 'package:mercury/widgets/chat/chat_screen.dart';
 import 'package:mercury/widgets/groups/groups_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -12,34 +14,46 @@ class LoginScreen extends StatelessWidget {
   final _userEmailController = TextEditingController();
   final _userTagController = TextEditingController();
 
-  Future<void> _login({
-    String userName,
-    String userEmail,
-    String userTag,
+  Future<void> _login(
     BuildContext context,
-  }) async {
+  ) async {
     final _userState = Provider.of<UserProvider>(context, listen: false);
-    final _userId =
-        await LoginService().requestLogin(userName, userEmail, userTag);
+    final _userId = await LoginService().requestLogin(_userNameController.text,
+        _userEmailController.text, _userTagController.text);
 
     _userState.user = UserViewModel(
-      name: userName,
-      userId: _userId,
-      email: userEmail,
-      userTag: userTag
-    );
+        userId: _userId,
+        name: _userNameController.text,
+        email: _userEmailController.text,
+        userTag: _userTagController.text);
 
-    _navigateFoward(context);
+    _navigateToGroupsScreen(context);
   }
 
-  void _navigateFoward(BuildContext context) {
+  void _navigateToGroupsScreen(BuildContext context) {
     Navigator.of(context).pushNamed(GroupsScreen.route);
+  }
+
+  void _getMessages(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final messagesProvider =
+        Provider.of<MessagesProvider>(context, listen: false);
+
+    var messages = ChatService().requestMessages(userProvider.user.userId);
+
+    messagesProvider.loadMessages(messages.map((reply) => MessageViewModel(
+          userProvider.user,
+          reply.message.text,
+        )));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Mercury'), backgroundColor: Colors.indigo,),
+      appBar: AppBar(
+        title: Text('Mercury'),
+        backgroundColor: Colors.indigo,
+      ),
       body: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(
@@ -73,11 +87,7 @@ class LoginScreen extends StatelessWidget {
               ),
               RaisedButton(
                 child: Text('Sign in'),
-                onPressed: () => _login(
-                    userName: _userNameController.text,
-                    userEmail: _userEmailController.text,
-                    userTag: _userTagController.text,
-                    context: context),
+                onPressed: () => _login(context),
                 color: Colors.indigo,
                 textColor: Colors.white,
               ),

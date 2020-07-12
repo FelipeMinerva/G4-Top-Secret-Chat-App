@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:mercury/enum/message_status.dart';
 import 'package:mercury/models/message_view_model.dart';
 import 'package:mercury/providers/messages_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/message_view_model.dart';
-import '../../models/user_view_model.dart';
 
 class ChatInput extends StatefulWidget {
   final FocusNode _focusNode;
+  final int _groupId;
 
-  ChatInput(this._focusNode);
+  ChatInput(this._focusNode, this._groupId);
 
   @override
-  _ChatInputState createState() => _ChatInputState(_focusNode);
+  _ChatInputState createState() => _ChatInputState(_focusNode, _groupId);
 }
 
 class _ChatInputState extends State<ChatInput> {
   final FocusNode _focusNode;
   final inputController = TextEditingController();
+  final int _groupId;
   bool _isSendButtonDisabled;
 
-  _ChatInputState(this._focusNode);
+
+  _ChatInputState(this._focusNode, this._groupId);
 
   @override
   void dispose() {
@@ -45,12 +48,16 @@ class _ChatInputState extends State<ChatInput> {
   }
 
   void _onSend({String messageText, BuildContext context}) {
-    final messagesState = Provider.of<MessagesProvider>(context);
-    final userState = Provider.of<UserProvider>(context);
+    final messagesProvider = Provider.of<MessagesProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
 
     if (messageText.trim() != '') {
-      messagesState
-          .addMessage(MessageViewModel(UserViewModel.fromModel(userState.user), messageText));
+      messagesProvider.addMessage(MessageViewModel(
+        userId: userProvider.user.userId,
+        text: messageText,
+        groupId: _groupId,
+        status: MessageStatus.pending
+      ));
       inputController.clear();
     }
   }
