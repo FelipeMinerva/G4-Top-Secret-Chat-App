@@ -3,6 +3,7 @@ import 'package:mercury/enum/message_status.dart';
 import 'package:mercury/models/message_view_model.dart';
 import 'package:mercury/providers/messages_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
+import 'package:mercury/services/chat_service.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/message_view_model.dart';
@@ -22,7 +23,6 @@ class _ChatInputState extends State<ChatInput> {
   final inputController = TextEditingController();
   final int _groupId;
   bool _isSendButtonDisabled;
-
 
   _ChatInputState(this._focusNode, this._groupId);
 
@@ -48,16 +48,21 @@ class _ChatInputState extends State<ChatInput> {
   }
 
   void _onSend({String messageText, BuildContext context}) {
-    final messagesProvider = Provider.of<MessagesProvider>(context);
-    final userProvider = Provider.of<UserProvider>(context);
+    final messagesProvider = Provider.of<MessagesProvider>(context, listen: false);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-    if (messageText.trim() != '') {
-      messagesProvider.addMessage(MessageViewModel(
-        userId: userProvider.user.userId,
+    messageText = messageText.trim();
+
+    final message = MessageViewModel(
+        user: userProvider.user,
         text: messageText,
         groupId: _groupId,
-        status: MessageStatus.pending
-      ));
+        status: MessageStatus.pending);
+
+    final chatService = ChatService().push(message.toProto());
+
+    if (messageText.trim() != '' && chatService != null) {
+      messagesProvider.addMessage(message);
       inputController.clear();
     }
   }

@@ -17,12 +17,6 @@ namespace Mercury.Engine.API.DbContext.Mapping
 
             builder.ToTable("tb_user");
 
-
-            builder.Property(e => e.NmUserName)
-                .IsRequired()
-                .HasColumnName("nm_user_name")
-                .HasMaxLength(255);
-
             builder.Property(e => e.TxEmail)
             .IsRequired()
             .HasColumnName("tx_email")

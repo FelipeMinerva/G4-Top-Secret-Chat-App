@@ -1,6 +1,7 @@
 import 'package:mercury/services/service_base.dart';
 
-import 'gen/chat.pbgrpc.dart';
+import 'gen/services/chat.pbgrpc.dart';
+import 'gen/system/message.pb.dart';
 
 class ChatService extends ServiceBase {
   Stream<SubscriptionReply> requestMessages(int userId) async* {
@@ -18,5 +19,18 @@ class ChatService extends ServiceBase {
     } catch (e) {
       print('Caught error: $e');
     }
+  }
+
+  Future<PushReply> push(Message message) async {
+    final clientChannel = await setup.clientChannel;
+    final client = ChatClient(clientChannel);
+
+    var request = PushRequest()..message = message;
+
+    try {
+      return await client.push(request);
+    } catch (e) {}
+
+    return PushReply()..acknowledged = false;
   }
 }

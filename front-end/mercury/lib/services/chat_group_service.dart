@@ -1,6 +1,7 @@
 import 'package:mercury/services/service_base.dart';
 
-import 'gen/chat_group.pbgrpc.dart';
+import 'gen/services/chat_group.pb.dart';
+import 'gen/services/chat_group.pbgrpc.dart';
 
 class ChatGroupService extends ServiceBase {
   Future<CreateReply> requestCreate(String groupName) async {

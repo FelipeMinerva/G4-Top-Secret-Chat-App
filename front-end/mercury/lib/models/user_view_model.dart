@@ -1,17 +1,30 @@
+import 'package:mercury/services/gen/system/user.pb.dart';
+
 class UserViewModel {
-  String name;
   String email;
-  int userId;
-  String userTag;
+  int id;
+  String tag;
 
-  UserViewModel({this.name, this.email, this.userId, this.userTag});
-
-  UserViewModel.fromName(this.name);
+  UserViewModel({this.email, this.id, this.tag});
 
   UserViewModel.fromModel(UserViewModel user) {
-    this.userId = user.userId;
-    this.name = user.name;
+    this.id = user.id;
     this.email = user.email;
-    this.userTag = user.userTag;
+    this.tag = user.tag;
+  }
+
+  UserViewModel.fromProto(User userProto) {
+    this.id = userProto.userId;
+    this.email = userProto.userEmail;
+    this.tag = userProto.userTag;
+  }
+
+  User toProto() {
+    if (this == null) return null;
+
+    return User()
+      ..userTag = this.tag
+      ..userId = this.id
+      ..userEmail = this.email;
   }
 }

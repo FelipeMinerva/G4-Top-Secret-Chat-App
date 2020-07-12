@@ -1,12 +1,12 @@
-import 'package:mercury/services/gen/user.pb.dart';
 import 'package:mercury/services/service_base.dart';
 
-import 'gen/user.pbgrpc.dart';
+import 'gen/services/users.pb.dart';
+import 'gen/services/users.pbgrpc.dart';
 
 class UserService extends ServiceBase {
   Future<GetUserByTagReply> getUserByTag(String tag) async {
     final clientChannel = await setup.clientChannel;
-    final client = UserClient(clientChannel);
+    final client = UsersClient(clientChannel);
 
     var request = GetUserByTagRequest()..userTag = tag;
 

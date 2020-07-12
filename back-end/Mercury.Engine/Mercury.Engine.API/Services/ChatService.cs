@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Mercury.Engine.API.DbContext.Entity;
 using Mercury.Engine.API.DbContext.UnitOfWork;
+using Mercury.Engine.API.Services.GrpcGenerated;
 using Microsoft.Extensions.Logging;
 
 namespace Mercury.Engine.API.Services
@@ -44,7 +45,7 @@ namespace Mercury.Engine.API.Services
             {
                 DtTimestamp = DateTime.Now,
                 FkGroup = request.Message.GroupId,
-                FkUser = request.Message.UserId,
+                FkUser = request.Message.User.UserId,
                 TxMessage = request.Message.Text,
             });
 

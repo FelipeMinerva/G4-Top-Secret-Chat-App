@@ -14,7 +14,6 @@ namespace Mercury.Engine.API.DbContext.Entity
 
         [Key]
         public int IdUser { get; set; }
-        public string NmUserName { get; set; }
         public string TxEmail { get; set; }
         public string TxUserTag { get; set; }
 

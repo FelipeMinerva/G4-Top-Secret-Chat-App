@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mercury.Engine.API.DbContext.Entity;
 using Mercury.Engine.API.DbContext.Repositories.RepositoriesInterfaces;
-using Mercury.Engine.API.Services;
+using Mercury.Engine.API.Models.GrpcGenerated;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mercury.Engine.API.DbContext.Repositories
@@ -27,7 +27,12 @@ namespace Mercury.Engine.API.DbContext.Repositories
                     GroupId = e.FkGroup,
                     Text = e.TxMessage,
                     Timestamp = DateTime.Now.ToString(),
-                    UserId = e.FkUser 
+                    User = new User
+                    {
+                        UserId = e.FkUserNavigation.IdUser,
+                        UserEmail = e.FkUserNavigation.TxEmail,
+                        UserTag = e.FkUserNavigation.TxUserTag
+                    },
                 })
                 .AsAsyncEnumerable();
 

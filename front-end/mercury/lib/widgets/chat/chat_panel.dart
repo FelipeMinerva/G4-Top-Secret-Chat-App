@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:mercury/providers/messages_provider.dart';
-import 'package:mercury/providers/user_provider.dart';
-import 'package:mercury/services/chat_service.dart';
 import 'package:provider/provider.dart';
-import 'package:mercury/models/message_view_model.dart' as models;
 
 import './chat_message.dart';
 
 class ChatPanel extends StatelessWidget {
-  void _getMessages(BuildContext context, MessagesProvider messagesState) {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+  final int _groupId;
+  final _scrollController = ScrollController()  ;
 
-    var messages = ChatService().requestMessages(userProvider.user.userId);
-
-    messagesState.loadMessages(messages.map((reply) => models.MessageViewModel(
-          userProvider.user,
-          reply.message.text,
-        )));
-  }
+  ChatPanel(this._groupId);
 
   @override
   Widget build(BuildContext context) {
-    final _messagesState =
-        Provider.of<MessagesProvider>(context, listen: false);
-    _getMessages(context, _messagesState);
+    final messagesProvider = Provider.of<MessagesProvider>(context);
+    // _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+    //     duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
 
     return Container(
       color: Colors.white38,
@@ -34,14 +25,15 @@ class ChatPanel extends StatelessWidget {
             child: Align(
               alignment: Alignment.topLeft,
               child: ListView(
+                controller: _scrollController,
                 shrinkWrap: true,
-                reverse: true,
                 scrollDirection: Axis.vertical,
                 children: <Widget>[
-                  ..._messagesState.messages
+                  ...messagesProvider.messages
+                      .where((message) => message.groupId == _groupId)
                       .map((e) => Container(
                           padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
-                          color: _messagesState.messages.indexOf(e) % 2 == 0
+                          color: messagesProvider.messages.indexOf(e) % 2 == 0
                               ? Colors.indigo[50]
                               : Colors.white10,
                           child: (ChatMessage(e))))

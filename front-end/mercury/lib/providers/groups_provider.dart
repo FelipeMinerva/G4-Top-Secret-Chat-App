@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:mercury/services/gen/chat_group.pb.dart';
+import 'package:mercury/services/gen/services/chat_group.pb.dart';
 
 import '../models/group_view_model.dart';
 

@@ -20,9 +20,9 @@ class _GroupsScreenState extends State<GroupsScreen> {
   @override
   void didChangeDependencies() {
     if (_userProvider == null)
-      _userProvider = Provider.of<UserProvider>(context);
+      _userProvider = Provider.of<UserProvider>(context, listen: false);
     if (_groupsProvider == null)
-      _groupsProvider = Provider.of<GroupsProvider>(context);
+      _groupsProvider = Provider.of<GroupsProvider>(context, listen: false);
 
     if (!_hasLoadedGroups) _getGroups();
 
@@ -31,7 +31,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
 
   void _getGroups() async {
     final groups =
-        ChatGroupService().requestGroupsByUserId(_userProvider.user.userId);
+        ChatGroupService().requestGroupsByUserId(_userProvider.user.id);
 
     _groupsProvider.loadGroups(groups);
     _hasLoadedGroups = true;
@@ -42,7 +42,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
     return Container(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(_userProvider.user.name),
+          title: Text(_userProvider.user.tag),
           backgroundColor: Colors.indigo,
         ),
         body: GroupPanel(),

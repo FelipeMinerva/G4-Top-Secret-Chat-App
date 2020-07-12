@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mercury/providers/groups_provider.dart';
+import 'package:mercury/providers/messages_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
 import 'package:mercury/widgets/groups/groups_screen.dart';
 import 'package:mercury/widgets/login/login_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'models/user_view_model.dart';
 import 'widgets/chat/chat_screen.dart';
 
 void main() => runApp(MultiProvider(
@@ -15,6 +15,9 @@ void main() => runApp(MultiProvider(
         ),
         ChangeNotifierProvider(
           create: (context) => GroupsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => MessagesProvider(),
         )
       ],
       child: Mercury(),

@@ -18,7 +18,7 @@ class ChatMessage extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Text(
-                  _message.sender.name,
+                  _message.user.tag,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(

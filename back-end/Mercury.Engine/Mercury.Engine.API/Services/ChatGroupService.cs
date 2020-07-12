@@ -2,7 +2,8 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Mercury.Engine.API.DbContext.Entity;
 using Mercury.Engine.API.DbContext.UnitOfWork;
-using Microsoft.Extensions.Logging;
+using Mercury.Engine.API.Models.GrpcGenerated;
+using Mercury.Engine.API.Services.GrpcGenerated;
 
 namespace Mercury.Engine.API.Services
 {

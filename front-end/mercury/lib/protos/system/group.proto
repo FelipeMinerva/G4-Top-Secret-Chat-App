@@ -1,0 +1,10 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Mercury.Engine.API.Models.GrpcGenerated";
+
+package system;
+
+ message Group {
+    int32 groupId = 1;
+    string groupName = 2;
+ }

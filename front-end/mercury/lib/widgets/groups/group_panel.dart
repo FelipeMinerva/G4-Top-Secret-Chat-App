@@ -5,9 +5,7 @@ import 'package:mercury/widgets/groups/group.dart';
 import 'package:provider/provider.dart';
 import 'package:mercury/services/chat_group_service.dart';
 
-
 class GroupPanel extends StatelessWidget {
-
   void _createGroup(String groupName, GroupsProvider groupsProvider) async {
     final groupCreateReply = await ChatGroupService().requestCreate(groupName);
 
@@ -23,7 +21,7 @@ class GroupPanel extends StatelessWidget {
 
     return Container(
       child: Scaffold(
-              body: ListView(
+        body: ListView(
           children: groupsProvider != null && groupsProvider.groups.length >= 1
               ? groupsProvider.groups
                   .map((e) => Group(e, groupsProvider.groups.indexOf(e).isOdd))
@@ -40,7 +38,7 @@ class GroupPanel extends StatelessWidget {
                   ),
                 ],
         ),
-                floatingActionButton: new FloatingActionButton(
+        floatingActionButton: new FloatingActionButton(
           onPressed: () => _createGroup('TestGroup', groupsProvider),
           child: Icon(Icons.add),
           backgroundColor: Colors.indigo,

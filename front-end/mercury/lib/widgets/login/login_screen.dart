@@ -10,23 +10,25 @@ import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   static const route = '/login';
-  final _userNameController = TextEditingController();
   final _userEmailController = TextEditingController();
   final _userTagController = TextEditingController();
 
   Future<void> _login(
     BuildContext context,
   ) async {
-    final _userState = Provider.of<UserProvider>(context, listen: false);
-    final _userId = await LoginService().requestLogin(_userNameController.text,
-        _userEmailController.text, _userTagController.text);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final messageProvider =
+        Provider.of<MessagesProvider>(context, listen: false);
 
-    _userState.user = UserViewModel(
-        userId: _userId,
-        name: _userNameController.text,
+    final _userId = await LoginService()
+        .requestLogin(_userEmailController.text, _userTagController.text);
+
+    userProvider.user = UserViewModel(
+        id: _userId,
         email: _userEmailController.text,
-        userTag: _userTagController.text);
+        tag: _userTagController.text);
 
+    _getMessages(context, messageProvider);
     _navigateToGroupsScreen(context);
   }
 
@@ -34,17 +36,12 @@ class LoginScreen extends StatelessWidget {
     Navigator.of(context).pushNamed(GroupsScreen.route);
   }
 
-  void _getMessages(BuildContext context) {
+  void _getMessages(BuildContext context, MessagesProvider messagesProvider) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final messagesProvider =
-        Provider.of<MessagesProvider>(context, listen: false);
 
-    var messages = ChatService().requestMessages(userProvider.user.userId);
+    var messages = ChatService().requestMessages(userProvider.user.id);
 
-    messagesProvider.loadMessages(messages.map((reply) => MessageViewModel(
-          userProvider.user,
-          reply.message.text,
-        )));
+    messagesProvider.loadMessages(messages);
   }
 
   @override
@@ -64,25 +61,18 @@ class LoginScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               TextField(
-                controller: _userNameController,
+                controller: _userTagController,
+                autofocus: true,
                 decoration: InputDecoration.collapsed(
                   border: InputBorder.none,
-                  hintText: 'Enter your name',
+                  hintText: 'Enter your tag',
                 ),
-                autofocus: true,
               ),
               TextField(
                 controller: _userEmailController,
                 decoration: InputDecoration.collapsed(
                   border: InputBorder.none,
                   hintText: 'Enter your email',
-                ),
-              ),
-              TextField(
-                controller: _userTagController,
-                decoration: InputDecoration.collapsed(
-                  border: InputBorder.none,
-                  hintText: 'Enter your tag',
                 ),
               ),
               RaisedButton(
