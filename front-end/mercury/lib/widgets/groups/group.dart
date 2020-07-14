@@ -12,6 +12,8 @@ class Group extends StatelessWidget {
     Navigator.of(context).pushNamed(ChatScreen.route, arguments: _group);
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,9 +21,9 @@ class Group extends StatelessWidget {
       color: _offColored ? Colors.grey[200] : Colors.white,
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
-              onTap: () => _navigateToChat(context),
-              splashColor: Colors.indigoAccent[100],
-              child: Row(
+        onTap: () => _navigateToChat(context),
+        splashColor: Colors.indigoAccent[100],
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             CircleAvatar(

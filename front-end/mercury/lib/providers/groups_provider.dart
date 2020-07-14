@@ -5,7 +5,6 @@ import '../models/group_view_model.dart';
 
 class GroupsProvider with ChangeNotifier {
   List<GroupViewModel> _groups;
-  // var _hasLoaded = false;
 
   List<GroupViewModel> get groups {
     if (_groups == null) _groups = List<GroupViewModel>();
@@ -13,16 +12,8 @@ class GroupsProvider with ChangeNotifier {
   }
 
   Future<void> loadGroups(Stream<GetGroupsByUserReply> groups) async {
-    // if (_hasLoaded) return;
-
-    await for (var group in groups) {
-      _groups.add(GroupViewModel(
-        groupId: group.group.groupId,
-        groupName: group.group.groupName,
-      ));
-
-      // _hasLoaded = true;
-    }
+    _groups = List<GroupViewModel>();
+    groups.listen((group) => addGroup(GroupViewModel.fromProto(group.group)));
 
     notifyListeners();
   }
