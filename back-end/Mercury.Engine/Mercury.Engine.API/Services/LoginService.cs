@@ -2,16 +2,17 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Mercury.Engine.API.DbContext.Entity;
 using Mercury.Engine.API.DbContext.UnitOfWork;
+using Mercury.Engine.API.Services.GrpcGenerated;
 using Microsoft.Extensions.Logging;
 
 namespace Mercury.Engine.API.Services
 {
     public class LoginService : Login.LoginBase
     {
-        private readonly ILogger<ChatService> _logger;
+        private readonly ILogger<LoginService> _logger;
         private readonly IUnitOfWork _unitOfWork;
 
-        public LoginService(ILogger<ChatService> logger, IUnitOfWork unitOfWork)
+        public LoginService(ILogger<LoginService> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
@@ -19,14 +20,14 @@ namespace Mercury.Engine.API.Services
 
         public override async Task<LoginReply> RequestLogin(LoginRequest request, ServerCallContext context)
         {
-            var user = await _unitOfWork.TbUserRepository.GetUserByEmail(request.UserEmail);
+            var user = await _unitOfWork.TbUserRepository.GetUserByEmail(request.User.UserEmail);
 
             if (user is null)
             {
                 user = (await _unitOfWork.TbUserRepository.Add(new TbUser
                 {
-                    NmUserName = request.UserName,
-                    TxEmail = request.UserEmail
+                    TxEmail = request.User.UserEmail,
+                    TxUserTag = request.User.UserTag
                 })
                     .ConfigureAwait(false))
                     .Entity;

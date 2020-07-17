@@ -1,30 +1,24 @@
 import 'dart:async';
 import 'package:grpc/grpc.dart';
-import 'gen/login.pbgrpc.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:mercury/services/gen/system/user.pb.dart';
+import 'package:mercury/services/service_base.dart';
+import 'gen/services/login.pbgrpc.dart';
 
-class LoginService {
-  Future<int> requestLogin(String userName, String userEmail) async {
-    final trustedRoot =
-        await rootBundle.load('assets/certificates/localhost.cer');
-    final channelCredentials = new ChannelCredentials.secure(
-        certificates: trustedRoot.buffer.asUint8List().toList(),
-        authority: 'localhost');
+class LoginService extends ServiceBase {
+  Future<int> requestLogin(String userEmail, String userTag) async {
+    final clientChannel = await setup.clientChannel;
 
-    final channel = ClientChannel(
-      '10.0.2.2',
-      port: 5001,
-      options: ChannelOptions(credentials: channelCredentials),
+    final client = LoginClient(
+      clientChannel,
+      options: CallOptions(
+        timeout: Duration(seconds: 30),
+      ),
     );
 
-    final client = LoginClient(channel,
-        options: CallOptions(
-          timeout: Duration(seconds: 30),
-        ));
-
     var request = LoginRequest()
-      ..userEmail = userEmail
-      ..userName = userName;
+      ..user = User()
+      ..user.userTag = userTag
+      ..user.userEmail = userEmail;
 
     try {
       print('opening connection');
@@ -34,7 +28,7 @@ class LoginService {
       print('Caught error: $e');
     }
 
-    await channel.shutdown();
+    // await clientChannel.shutdown();
     return -1;
   }
 }

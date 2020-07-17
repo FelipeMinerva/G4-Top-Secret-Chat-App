@@ -1,7 +1,9 @@
+using System;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Mercury.Engine.API.DbContext.Entity;
 using Mercury.Engine.API.DbContext.UnitOfWork;
+using Mercury.Engine.API.Services.GrpcGenerated;
 using Microsoft.Extensions.Logging;
 
 namespace Mercury.Engine.API.Services
@@ -17,18 +19,40 @@ namespace Mercury.Engine.API.Services
             _unitOfWork = unitOfWork;
         }
 
-        public override async Task<MessageReply> RequestMessage(MessageRequest request, ServerCallContext context)
+        public override async Task Subscribe(
+            SubscriptionRequest request,
+            IServerStreamWriter<SubscriptionReply> streamWriter,
+            ServerCallContext context)
         {
-            await _unitOfWork.TbUserRepository.Add(new TbUser() { NmUserName = "Morgana" });
+            var messages = _unitOfWork.TbMessageRepository.GetMessagesByUser(request.UserId).ConfigureAwait(false);
+
+            await foreach (var message in messages)
+            {
+                await streamWriter.WriteAsync(new SubscriptionReply
+                {
+                    Message = message
+                })
+                .ConfigureAwait(false);
+            }
+        }
+
+        public override async Task<PushReply> Push(PushRequest request, ServerCallContext context)
+        {
+            if (await _unitOfWork.TbGroupRepository.Find(request.Message.GroupId) is null)
+                return new PushReply { Acknowledged = false };
+
+            await _unitOfWork.TbMessageRepository.Add(new TbMessage
+            {
+                DtTimestamp = DateTime.Now,
+                FkGroup = request.Message.GroupId,
+                FkUser = request.Message.User.UserId,
+                TxMessage = request.Message.Text,
+            });
+
             _unitOfWork.Save();
 
-            return await Task.FromResult(
-
-                new MessageReply()
-                {
-                    Message = "picles"
-                })
-            .ConfigureAwait(false);
+            return new PushReply { Acknowledged = true };
         }
+
     }
 }

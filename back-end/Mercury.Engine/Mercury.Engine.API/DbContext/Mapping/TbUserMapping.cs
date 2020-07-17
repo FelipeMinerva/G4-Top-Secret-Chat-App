@@ -17,12 +17,6 @@ namespace Mercury.Engine.API.DbContext.Mapping
 
             builder.ToTable("tb_user");
 
-
-            builder.Property(e => e.NmUserName)
-                .IsRequired()
-                .HasColumnName("nm_user_name")
-                .HasMaxLength(255);
-
             builder.Property(e => e.TxEmail)
             .IsRequired()
             .HasColumnName("tx_email")
@@ -30,6 +24,15 @@ namespace Mercury.Engine.API.DbContext.Mapping
 
             builder.HasIndex(e => e.TxEmail)
                 .HasName("IX_EMAIL")
+                .IsUnique();
+
+            builder.Property(e => e.TxUserTag)
+                .IsRequired()
+                .HasColumnName("tx_user_tag")
+                .HasMaxLength(63);
+
+            builder.HasIndex(e => e.TxUserTag)
+                .HasName("IX_USER_TAG")
                 .IsUnique();
         }
     }

@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Mercury.Engine.API.Models.GrpcGenerated";
+
+package system;
+
+message User {
+	int32 userId = 1;
+	string userTag = 2;
+	string userEmail = 3;
+}

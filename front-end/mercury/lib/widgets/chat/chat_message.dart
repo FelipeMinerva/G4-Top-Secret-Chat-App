@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:mercury/models/message.dart';
+import 'package:mercury/models/message_view_model.dart';
 
 class ChatMessage extends StatelessWidget {
-  final Message _message;
+  final MessageViewModel _message;
 
   ChatMessage(this._message);
 
@@ -18,7 +18,7 @@ class ChatMessage extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Text(
-                  _message.sender.name,
+                  _message.user.tag,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
