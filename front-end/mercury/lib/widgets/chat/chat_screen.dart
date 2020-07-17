@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:mercury/models/group_view_model.dart';
-import 'package:mercury/providers/messages_provider.dart';
 import 'package:mercury/widgets/chat/chat_input.dart';
-import 'package:provider/provider.dart';
 
 import 'chat_panel.dart';
 
 class ChatScreen extends StatefulWidget {
-  static String route = '/chat';
+  static const String route = '/chat';
+  final GroupViewModel _group;
+
+  ChatScreen(this._group);
 
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  _ChatScreenState createState() => _ChatScreenState(this._group);
 }
 
 class _ChatScreenState extends State<ChatScreen> {
   FocusNode _focusNode;
+  final GroupViewModel _group;
+
+  _ChatScreenState(this._group);
 
   @override
   void initState() {
@@ -30,19 +34,17 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final GroupViewModel group = ModalRoute.of(context).settings.arguments;
-
     return Container(
       width: double.infinity,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(group.groupName),
+          title: Text(_group.groupName),
           backgroundColor: Colors.indigo,
         ),
         body: Column(
           children: <Widget>[
-            Expanded(child: ChatPanel(group.groupId)),
-            ChatInput(_focusNode, group.groupId),
+            Expanded(child: ChatPanel(_group.groupId)),
+            ChatInput(_focusNode, _group.groupId),
           ],
         ),
       ),

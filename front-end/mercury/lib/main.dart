@@ -14,9 +14,6 @@ void main() => runApp(MultiProvider(
           create: (context) => UserProvider(),
         ),
         ChangeNotifierProvider(
-          create: (context) => GroupsProvider(),
-        ),
-        ChangeNotifierProvider(
           create: (context) => MessagesProvider(),
         )
       ],
@@ -34,10 +31,42 @@ class _MercuryState extends State<Mercury> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      routes: {
-        '/': (context) => LoginScreen(),
-        ChatScreen.route: (context) => ChatScreen(),
-        GroupsScreen.route: (context) => GroupsScreen(),
+      // routes: {
+      //   '/': (context) => LoginScreen(),
+      //   ChatScreen.route: (context) => ChatScreen(),
+      //   GroupsScreen.route: (context) => GroupsScreen(),
+      // },
+      showPerformanceOverlay: false,
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/':
+            return _createRoute(LoginScreen());
+          case ChatScreen.route:
+            return _createRoute(ChatScreen(settings.arguments));
+          case GroupsScreen.route:
+            return _createRoute(GroupsScreen());
+          default:
+            return _createRoute(LoginScreen());
+        }
+      },
+    );
+  }
+
+  Route _createRoute(Widget screen) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => screen,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(1.0, 0.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
       },
     );
   }

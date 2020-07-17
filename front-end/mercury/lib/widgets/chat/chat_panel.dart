@@ -18,7 +18,7 @@ class ChatPanel extends StatelessWidget {
 
     return Container(
       color: Colors.white38,
-      padding: EdgeInsets.all(10),
+      // padding: EdgeInsets.all(10),
       child: Stack(
         children: <Widget>[
           Scrollbar(
@@ -27,9 +27,10 @@ class ChatPanel extends StatelessWidget {
               child: ListView(
                 controller: _scrollController,
                 shrinkWrap: true,
+                reverse: true,
                 scrollDirection: Axis.vertical,
                 children: <Widget>[
-                  ...messagesProvider.messages
+                  ...messagesProvider.messages.reversed
                       .where((message) => message.groupId == _groupId)
                       .map((e) => Container(
                           padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),

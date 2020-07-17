@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mercury/models/message_view_model.dart';
 import 'package:mercury/models/user_view_model.dart';
 import 'package:mercury/providers/messages_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
@@ -20,15 +19,19 @@ class LoginScreen extends StatelessWidget {
     final messageProvider =
         Provider.of<MessagesProvider>(context, listen: false);
 
-    final _userId = await LoginService()
+    final userId = await LoginService()
         .requestLogin(_userEmailController.text, _userTagController.text);
 
     userProvider.user = UserViewModel(
-        id: _userId,
+        id: userId,
         email: _userEmailController.text,
         tag: _userTagController.text);
 
-    _getMessages(context, messageProvider);
+    _getMessages(
+      userId: userId,
+      context: context,
+      messagesProvider: messageProvider,
+    );
     _navigateToGroupsScreen(context);
   }
 
@@ -36,10 +39,9 @@ class LoginScreen extends StatelessWidget {
     Navigator.of(context).pushNamed(GroupsScreen.route);
   }
 
-  void _getMessages(BuildContext context, MessagesProvider messagesProvider) {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-
-    var messages = ChatService().requestMessages(userProvider.user.id);
+  void _getMessages(
+      {BuildContext context, MessagesProvider messagesProvider, int userId}) {
+    var messages = ChatService().requestMessages(userId);
 
     messagesProvider.loadMessages(messages);
   }
