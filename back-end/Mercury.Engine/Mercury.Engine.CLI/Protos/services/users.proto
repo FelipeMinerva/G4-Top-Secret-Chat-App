@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "Mercury.Engine.API.Services.GrpcGenerated";
+
+import "system/user.proto";
+
+package users;
+
+service Users{
+    rpc GetUserByTag (GetUserByTagRequest) returns (GetUserByTagReply);
+}
+
+message GetUserByTagRequest{ 
+    string userTag = 1;
+}
+
+message GetUserByTagReply{
+    system.User user = 1;
+}

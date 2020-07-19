@@ -14,7 +14,7 @@ import '../system/message.pb.dart' as $1;
 class SubscriptionRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SubscriptionRequest', package: const $pb.PackageName('chat'), createEmptyInstance: create)
     ..a<$core.int>(1, 'userId', $pb.PbFieldType.O3, protoName: 'userId')
-    ..aOB(2, 'active')
+    ..aOM<$1.Message>(2, 'message', subBuilder: $1.Message.create)
     ..hasRequiredFields = false
   ;
 
@@ -43,13 +43,15 @@ class SubscriptionRequest extends $pb.GeneratedMessage {
   void clearUserId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.bool get active => $_getBF(1);
+  $1.Message get message => $_getN(1);
   @$pb.TagNumber(2)
-  set active($core.bool v) { $_setBool(1, v); }
+  set message($1.Message v) { setField(2, v); }
   @$pb.TagNumber(2)
-  $core.bool hasActive() => $_has(1);
+  $core.bool hasMessage() => $_has(1);
   @$pb.TagNumber(2)
-  void clearActive() => clearField(2);
+  void clearMessage() => clearField(2);
+  @$pb.TagNumber(2)
+  $1.Message ensureMessage() => $_ensure(1);
 }
 
 class SubscriptionReply extends $pb.GeneratedMessage {
@@ -147,26 +149,5 @@ class PushReply extends $pb.GeneratedMessage {
   $core.bool hasAcknowledged() => $_has(0);
   @$pb.TagNumber(1)
   void clearAcknowledged() => clearField(1);
-}
-
-class Close extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Close', package: const $pb.PackageName('chat'), createEmptyInstance: create)
-    ..hasRequiredFields = false
-  ;
-
-  Close._() : super();
-  factory Close() => create();
-  factory Close.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Close.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  Close clone() => Close()..mergeFromMessage(this);
-  Close copyWith(void Function(Close) updates) => super.copyWith((message) => updates(message as Close));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static Close create() => Close._();
-  Close createEmptyInstance() => create();
-  static $pb.PbList<Close> createRepeated() => $pb.PbList<Close>();
-  @$core.pragma('dart2js:noInline')
-  static Close getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Close>(create);
-  static Close _defaultInstance;
 }
 

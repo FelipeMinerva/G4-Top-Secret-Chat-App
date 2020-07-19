@@ -4,14 +4,17 @@ import 'gen/services/chat.pbgrpc.dart';
 import 'gen/system/message.pb.dart';
 
 class ChatService extends ServiceBase {
-  Stream<SubscriptionReply> requestMessages(int userId) async* {
+  Stream<SubscriptionReply> requestMessages(
+      int userId, Stream<SubscriptionRequest> stream) async* {
     final _clientChannel = await setup.clientChannel;
     final client = ChatClient(_clientChannel);
 
-    var request = SubscriptionRequest()..userId = userId;
+    var request = SubscriptionRequest()
+      ..userId = userId
+      ..message = null;
 
     try {
-      await for (var message in client.subscribe(request)) {
+      await for (var message in client.subscribe(stream)) {
         print(message.message);
         yield message;
       }
@@ -32,5 +35,15 @@ class ChatService extends ServiceBase {
     } catch (e) {}
 
     return PushReply()..acknowledged = false;
+  }
+
+  Stream<SubscriptionRequest> createSubRequest() async* {
+    int i = 0;
+    while (i < 10) {
+      yield SubscriptionRequest()
+        ..userId = 1
+        ..message = null;
+      i++;
+    }
   }
 }

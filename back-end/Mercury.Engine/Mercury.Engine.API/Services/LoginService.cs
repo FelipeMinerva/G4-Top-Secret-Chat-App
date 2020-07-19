@@ -9,14 +9,9 @@ namespace Mercury.Engine.API.Services
 {
     public class LoginService : Login.LoginBase
     {
-        private readonly ILogger<LoginService> _logger;
         private readonly IUnitOfWork _unitOfWork;
 
-        public LoginService(ILogger<LoginService> logger, IUnitOfWork unitOfWork)
-        {
-            _logger = logger;
-            _unitOfWork = unitOfWork;
-        }
+        public LoginService(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
         public override async Task<LoginReply> RequestLogin(LoginRequest request, ServerCallContext context)
         {

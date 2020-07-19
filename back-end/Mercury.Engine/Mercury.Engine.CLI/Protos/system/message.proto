@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Mercury.Engine.API.Models.GrpcGenerated";
+
+import "system/user.proto";
+
+package system;
+
+message Message {
+    string text = 1;
+    system.User user = 2;
+    int32 groupId = 3;
+    string timestamp = 4;
+}
