@@ -13,6 +13,10 @@ class MessageViewModel {
     this.timestamp = DateTime.now();
   }
 
+  MessageViewModel.asSubscriptionSeed(int userId){
+    this.user = UserViewModel(id: userId);
+  }
+
   MessageViewModel.fromProto(Message proto) {
     if (proto == null) return;
 

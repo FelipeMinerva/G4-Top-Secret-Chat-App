@@ -42,10 +42,13 @@ namespace Mercury.Engine.API.Services
             IServerStreamWriter<SubscriptionReply> replyStream,
             ServerCallContext context)
         {
-            int userId = (requestStream.Current).UserId;
+            await requestStream.MoveNext();
+
+            int userId = requestStream.Current.UserId;
+
             _subscriptionService.Add(userId, requestStream, replyStream);
 
-            await foreach (var item in requestStream.ReadAllAsync().ConfigureAwait(false))
+            await foreach (var item in requestStream.ReadAllAsync())
             {
                 var users = new List<int>();
                 await foreach (var user in _unitOfWork.TbUserGroupRepository.GetAllUsersByGroupId(item.Message.GroupId, item.UserId))
@@ -53,6 +56,7 @@ namespace Mercury.Engine.API.Services
 
                 foreach (var reader in _subscriptionService.GetRangeByUserIds(users))
                 {
+
                     await reader.StreamWriter.WriteAsync(new SubscriptionReply { Message = item.Message }).ConfigureAwait(false);
                 }
             }

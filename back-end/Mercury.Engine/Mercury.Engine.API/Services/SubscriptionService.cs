@@ -25,18 +25,18 @@ namespace Mercury.Engine.API.Services
 
         public void Add(int userId, IAsyncStreamReader<SubscriptionRequest> request, IServerStreamWriter<SubscriptionReply> reply)
         {
-            if (_subscriptionLegder.FirstOrDefault(z => z.UserId == userId) is null)
+            if (SubscriptionLedger.FirstOrDefault(z => z.UserId == userId) is null)
                 _subscriptionLegder.Add(new SubscriptionContainer { UserId = userId, StreamReader = request, StreamWriter = reply });
         }
 
         public IServerStreamWriter<SubscriptionReply> GetStreamWriterByUserId(int userId)
-            => _subscriptionLegder.FirstOrDefault(z => z.UserId == userId).StreamWriter;
+            => SubscriptionLedger.FirstOrDefault(z => z.UserId == userId).StreamWriter;
 
         public IAsyncStreamReader<SubscriptionRequest> GetStreamReaderByUserId(int userId)
-            => _subscriptionLegder.FirstOrDefault(z => z.UserId == userId).StreamReader;
+            => SubscriptionLedger.FirstOrDefault(z => z.UserId == userId).StreamReader;
 
-        public SubscriptionContainer GetByUserId(int userId) => _subscriptionLegder.FirstOrDefault(z => z.UserId == userId);
+        public SubscriptionContainer GetByUserId(int userId) => SubscriptionLedger.FirstOrDefault(z => z.UserId == userId);
 
-        public IEnumerable<SubscriptionContainer> GetRangeByUserIds(ICollection<int> userIds) => _subscriptionLegder.Where(z => userIds.Contains(z.UserId));
+        public IEnumerable<SubscriptionContainer> GetRangeByUserIds(ICollection<int> userIds) => SubscriptionLedger.Where(z => userIds.Contains(z.UserId));
     }
 }

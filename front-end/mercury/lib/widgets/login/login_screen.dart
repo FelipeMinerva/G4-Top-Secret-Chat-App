@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mercury/models/message_view_model.dart';
 import 'package:mercury/models/user_view_model.dart';
 import 'package:mercury/providers/messages_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
@@ -41,7 +42,9 @@ class LoginScreen extends StatelessWidget {
 
   void _getMessages(
       {BuildContext context, MessagesProvider messagesProvider, int userId}) {
-    var messages = ChatService().requestMessages(userId);
+    messagesProvider.sendMessage(1, MessageViewModel.asSubscriptionSeed(userId));
+
+    var messages = ChatService().requestMessages(messagesProvider.outputStream.stream);
 
     messagesProvider.loadMessages(messages);
   }

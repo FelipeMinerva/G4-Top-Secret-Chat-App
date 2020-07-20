@@ -5,16 +5,13 @@ import 'gen/system/message.pb.dart';
 
 class ChatService extends ServiceBase {
   Stream<SubscriptionReply> requestMessages(
-      int userId, Stream<SubscriptionRequest> stream) async* {
+      Stream<SubscriptionRequest> requestStream) async* {
     final _clientChannel = await setup.clientChannel;
     final client = ChatClient(_clientChannel);
 
-    var request = SubscriptionRequest()
-      ..userId = userId
-      ..message = null;
 
     try {
-      await for (var message in client.subscribe(stream)) {
+      await for (var message in client.subscribe(requestStream)) {
         print(message.message);
         yield message;
       }
