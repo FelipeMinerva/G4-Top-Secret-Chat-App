@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mercury/providers/groups_provider.dart';
 import 'package:mercury/providers/messages_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
 import 'package:mercury/widgets/groups/groups_screen.dart';

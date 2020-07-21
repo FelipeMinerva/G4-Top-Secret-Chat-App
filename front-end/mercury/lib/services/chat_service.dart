@@ -9,7 +9,7 @@ class ChatService extends ServiceBase {
     final _clientChannel = await setup.clientChannel;
     final client = ChatClient(_clientChannel);
 
-
+    // requestStream.listen((event) { print(event.message.text);});
     try {
       await for (var message in client.subscribe(requestStream)) {
         print(message.message);

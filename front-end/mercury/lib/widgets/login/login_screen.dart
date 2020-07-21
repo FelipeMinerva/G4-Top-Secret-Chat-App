@@ -33,7 +33,7 @@ class LoginScreen extends StatelessWidget {
       context: context,
       messagesProvider: messageProvider,
     );
-    _navigateToGroupsScreen(context);
+    // _navigateToGroupsScreen(context);
   }
 
   void _navigateToGroupsScreen(BuildContext context) {
@@ -42,7 +42,7 @@ class LoginScreen extends StatelessWidget {
 
   void _getMessages(
       {BuildContext context, MessagesProvider messagesProvider, int userId}) {
-    messagesProvider.sendMessage(1, MessageViewModel.asSubscriptionSeed(userId));
+    messagesProvider.sendMessage(2, MessageViewModel.asSubscriptionSeed(userId));
 
     var messages = ChatService().requestMessages(messagesProvider.outputStream.stream);
 

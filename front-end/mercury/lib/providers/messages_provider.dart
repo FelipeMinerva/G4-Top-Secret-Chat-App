@@ -22,7 +22,7 @@ class MessagesProvider with ChangeNotifier {
               status: MessageStatus.pending,
               text: 'picles',
               user: UserViewModel(
-                  id: userId, email: 'felipe@mercuy.com', tag: 'minerva'))
+                  id: userId, email: 'carolina@mercuy.com', tag: 'tassol'))
           .toProto()
       ..userId = userId);
     outputStream.add(SubscriptionRequest()
@@ -31,9 +31,12 @@ class MessagesProvider with ChangeNotifier {
               status: MessageStatus.pending,
               text: 'picles',
               user: UserViewModel(
-                  id: userId, email: 'felipe@mercuy.com', tag: 'minerva'))
+                  id: userId, email: 'carolina@mercuy.com', tag: 'tassol'))
           .toProto()
       ..userId = userId);
+
+    // outputStream.add(SubscriptionRequest()..userId = 2..message = message.toProto());
+
     if (message != null) addMessage(message);
   }
 
@@ -46,7 +49,10 @@ class MessagesProvider with ChangeNotifier {
   Future<void> loadMessages(Stream<SubscriptionReply> messages) async {
     _messages = List<MessageViewModel>();
     messages.listen((message) =>
-        _messages.add(MessageViewModel.fromProto(message.message)));
+    {
+        print(message),
+        addMessage(MessageViewModel.fromProto(message.message))
+    });
 
     notifyListeners();
   }

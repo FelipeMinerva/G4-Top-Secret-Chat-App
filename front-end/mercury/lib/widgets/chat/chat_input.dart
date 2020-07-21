@@ -62,7 +62,7 @@ class _ChatInputState extends State<ChatInput> {
     final chatService = ChatService().push(message.toProto());
 
     if (messageText.trim() != '' && chatService != null) {
-      messagesProvider.addMessage(message);
+      messagesProvider.sendMessage(userProvider.user.id, message);
       inputController.clear();
     }
   }

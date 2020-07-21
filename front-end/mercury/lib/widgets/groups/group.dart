@@ -12,8 +12,6 @@ class Group extends StatelessWidget {
     Navigator.of(context).pushNamed(ChatScreen.route, arguments: _group);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Container(

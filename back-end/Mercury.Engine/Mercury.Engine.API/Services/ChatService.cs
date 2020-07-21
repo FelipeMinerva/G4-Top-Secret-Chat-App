@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Mercury.Engine.API.DbContext.Entity;
 using Mercury.Engine.API.DbContext.UnitOfWork;
+using Mercury.Engine.API.Models.GrpcGenerated;
 using Mercury.Engine.API.Services.GrpcGenerated;
 using Mercury.Engine.API.Services.ServiceInterfaces;
 
@@ -48,8 +49,21 @@ namespace Mercury.Engine.API.Services
 
             _subscriptionService.Add(userId, requestStream, replyStream);
 
+            var tasks = new List<Task>
+            {
+                Listen(requestStream)
+            };
+
+            await Task.WhenAll(tasks);
+        }
+
+        private async Task Listen(IAsyncStreamReader<SubscriptionRequest> requestStream)
+        {
             await foreach (var item in requestStream.ReadAllAsync())
             {
+
+                await Push(item.Message);
+
                 var users = new List<int>();
                 await foreach (var user in _unitOfWork.TbUserGroupRepository.GetAllUsersByGroupId(item.Message.GroupId, item.UserId))
                     users.Add(user);
@@ -60,21 +74,13 @@ namespace Mercury.Engine.API.Services
                     await reader.StreamWriter.WriteAsync(new SubscriptionReply { Message = item.Message }).ConfigureAwait(false);
                 }
             }
-
-            var messages = _unitOfWork.TbMessageRepository.GetMessagesByUser(userId).ConfigureAwait(false);
-
-            await foreach (var message in messages)
-            {
-                while (!context.CancellationToken.IsCancellationRequested)
-                {
-                    await replyStream.WriteAsync(new SubscriptionReply
-                    {
-                        Message = message
-                    })
-                    .ConfigureAwait(false);
-                }
-            }
         }
+
+        private async Task Push(IServerStreamWriter<SubscriptionReply> replyStream)
+        {
+
+        }
+
 
         public override async Task<PushReply> Push(PushRequest request, ServerCallContext context)
         {
@@ -93,6 +99,23 @@ namespace Mercury.Engine.API.Services
             _unitOfWork.Save();
 
             return new PushReply { Acknowledged = true };
+        }
+
+        public async Task Push(Message message)
+        {
+            if (await _unitOfWork.TbGroupRepository.Find(message.GroupId).ConfigureAwait(false) != null)
+            {
+                await _unitOfWork.TbMessageRepository.Add(new TbMessage
+                {
+                    DtTimestamp = DateTime.Now,
+                    FkGroup = message.GroupId,
+                    FkUser = message.User.UserId,
+                    TxMessage = message.Text,
+                })
+                  .ConfigureAwait(false);
+
+                _unitOfWork.Save();
+            }
         }
 
     }

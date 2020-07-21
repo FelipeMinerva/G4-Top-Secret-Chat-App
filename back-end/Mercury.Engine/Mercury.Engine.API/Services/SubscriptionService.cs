@@ -25,8 +25,12 @@ namespace Mercury.Engine.API.Services
 
         public void Add(int userId, IAsyncStreamReader<SubscriptionRequest> request, IServerStreamWriter<SubscriptionReply> reply)
         {
-            if (SubscriptionLedger.FirstOrDefault(z => z.UserId == userId) is null)
-                _subscriptionLegder.Add(new SubscriptionContainer { UserId = userId, StreamReader = request, StreamWriter = reply });
+            var ledger = SubscriptionLedger.FirstOrDefault(z => z.UserId == userId);
+
+            if (ledger != null)
+                ledger = new SubscriptionContainer { UserId = userId, StreamReader = request, StreamWriter = reply };
+            else
+            _subscriptionLegder.Add(new SubscriptionContainer { UserId = userId, StreamReader = request, StreamWriter = reply });
         }
 
         public IServerStreamWriter<SubscriptionReply> GetStreamWriterByUserId(int userId)
