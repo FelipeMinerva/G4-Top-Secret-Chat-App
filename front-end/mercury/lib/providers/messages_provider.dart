@@ -1,43 +1,32 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:mercury/enum/message_status.dart';
 import 'package:mercury/models/message_view_model.dart';
-import 'package:mercury/models/user_view_model.dart';
+import 'package:mercury/services/chat_service.dart';
 import 'package:mercury/services/gen/services/chat.pb.dart';
 
 class MessagesProvider with ChangeNotifier {
-  List<MessageViewModel> _messages = List<MessageViewModel>();
-  StreamController<SubscriptionRequest> outputStream =
-      StreamController<SubscriptionRequest>();
+  var _messages = List<MessageViewModel>();
+  var outputStream = StreamController<SubscriptionRequest>();
+  var service = ChatService();
 
   List<MessageViewModel> get messages {
     return [..._messages];
   }
 
   void sendMessage(int userId, MessageViewModel message) {
-    outputStream.add(SubscriptionRequest()
-      ..message = MessageViewModel(
-              groupId: 1,
-              status: MessageStatus.pending,
-              text: 'picles',
-              user: UserViewModel(
-                  id: userId, email: 'carolina@mercuy.com', tag: 'tassol'))
-          .toProto()
-      ..userId = userId);
-    outputStream.add(SubscriptionRequest()
-      ..message = MessageViewModel(
-              groupId: 1,
-              status: MessageStatus.pending,
-              text: 'picles',
-              user: UserViewModel(
-                  id: userId, email: 'carolina@mercuy.com', tag: 'tassol'))
-          .toProto()
-      ..userId = userId);
+    try {
+      outputStream.add(SubscriptionRequest()
+        ..userId = userId
+        ..message = message.toProto());
 
-    // outputStream.add(SubscriptionRequest()..userId = 2..message = message.toProto());
-
-    if (message != null) addMessage(message);
+      if (message != null) addMessage(message);
+    } catch (e) {
+      print(e);
+      service = ChatService();
+      outputStream = StreamController<SubscriptionRequest>();
+      service.requestMessages(outputStream.stream);
+    }
   }
 
   void addMessage(MessageViewModel message) {
@@ -48,12 +37,7 @@ class MessagesProvider with ChangeNotifier {
 
   Future<void> loadMessages(Stream<SubscriptionReply> messages) async {
     _messages = List<MessageViewModel>();
-    messages.listen((message) =>
-    {
-        print(message),
-        addMessage(MessageViewModel.fromProto(message.message))
-    });
-
-    notifyListeners();
+    messages.listen(
+        (message) => addMessage(MessageViewModel.fromProto(message.message)));
   }
 }

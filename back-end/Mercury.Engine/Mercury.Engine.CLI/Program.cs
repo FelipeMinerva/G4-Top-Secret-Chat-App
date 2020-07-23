@@ -42,7 +42,7 @@ namespace Mercury.Engine.CLI
                 await foreach (var response in request.ResponseStream.ReadAllAsync())
                 {
 
-                    Console.WriteLine(response.Message.User.UserTag + response.Message.Text);
+                    Console.WriteLine(response.Message.User.UserTag + " " + response.Message.Text);
                 }
             });
 
@@ -61,12 +61,12 @@ namespace Mercury.Engine.CLI
                     Message = new Message
                     {
                         GroupId = 1,
-                        User = new User { UserEmail = "felipe@mercury.com", UserTag = "minerva", UserId = 1 },
+                        User = new User { UserEmail = "papu@mercury.com", UserTag = "papu", UserId = 3 },
                         Text = result,
-                        Timestamp = DateTime.Now.ToString()
+                        Timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd hh:mm:ss")
                     },
                     UserId = 1
-                });
+                }); ;
             }
 
             Console.WriteLine("Disconnecting");

@@ -9,7 +9,6 @@ package chat;
 // The chat service definition.
 service Chat {
     rpc Subscribe(stream SubscriptionRequest) returns (stream SubscriptionReply);
-    rpc Push(PushRequest) returns (PushReply);
 }
 
 // Object used to create the connection. It carries the user
@@ -23,10 +22,10 @@ message SubscriptionReply {
     system.Message message = 1;
 }
 
-message PushRequest {
-    system.Message message = 1; 
+message Open {
+    int32 userId = 1;
 }
 
-message PushReply {
-    bool acknowledged = 1;
+message Close {
+
 }

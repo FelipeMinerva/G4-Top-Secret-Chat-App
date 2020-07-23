@@ -29,11 +29,11 @@ class LoginScreen extends StatelessWidget {
         tag: _userTagController.text);
 
     _getMessages(
-      userId: userId,
+      user: userProvider.user,
       context: context,
       messagesProvider: messageProvider,
     );
-    // _navigateToGroupsScreen(context);
+    _navigateToGroupsScreen(context);
   }
 
   void _navigateToGroupsScreen(BuildContext context) {
@@ -41,10 +41,12 @@ class LoginScreen extends StatelessWidget {
   }
 
   void _getMessages(
-      {BuildContext context, MessagesProvider messagesProvider, int userId}) {
-    messagesProvider.sendMessage(2, MessageViewModel.asSubscriptionSeed(userId));
+      {BuildContext context, MessagesProvider messagesProvider, UserViewModel user}) {
+    messagesProvider.sendMessage(
+        2, MessageViewModel.asSubscriptionSeed(user));
 
-    var messages = ChatService().requestMessages(messagesProvider.outputStream.stream);
+    var messages = messagesProvider.service
+        .requestMessages(messagesProvider.outputStream.stream);
 
     messagesProvider.loadMessages(messages);
   }

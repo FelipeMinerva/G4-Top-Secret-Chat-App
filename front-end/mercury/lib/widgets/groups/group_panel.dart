@@ -6,6 +6,8 @@ import 'package:mercury/widgets/groups/group.dart';
 import 'package:provider/provider.dart';
 import 'package:mercury/services/chat_group_service.dart';
 
+import 'group_new.dart';
+
 class GroupPanel extends StatefulWidget {
   @override
   _GroupPanelState createState() => _GroupPanelState();
@@ -36,6 +38,10 @@ class _GroupPanelState extends State<GroupPanel> {
         groupId: groupCreateReply.groupId,
         groupName: groupName,
       ));
+  }
+
+  void _navigateToNewGroupScreen(BuildContext context) {
+    Navigator.of(context).pushNamed(GroupNew.route);
   }
 
   void _getGroups() async {
@@ -70,7 +76,7 @@ class _GroupPanelState extends State<GroupPanel> {
                 ],
         ),
         floatingActionButton: new FloatingActionButton(
-          onPressed: () => _createGroup('TestGroup', groupsProvider),
+          onPressed: () => _navigateToNewGroupScreen(context),
           child: Icon(Icons.add),
           backgroundColor: Colors.indigo,
         ),
