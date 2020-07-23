@@ -3,7 +3,6 @@ import 'package:mercury/enum/message_status.dart';
 import 'package:mercury/models/message_view_model.dart';
 import 'package:mercury/providers/messages_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
-import 'package:mercury/services/chat_service.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/message_view_model.dart';
@@ -135,67 +134,5 @@ class _ChatInputState extends State<ChatInput> {
         ],
       ),
     );
-
-    // }
-    // return Container(
-    //     child: Row(
-    //       children: <Widget>[
-    //         // Button send image
-    //         Material(
-    //           child: Container(
-    //             margin: EdgeInsets.symmetric(horizontal: 1.0),
-    //             child: IconButton(
-    //               icon: Icon(Icons.image),
-    //               onPressed: null,
-    //               color: Colors.indigo,
-    //             ),
-    //           ),
-    //           color: Colors.white,
-    //         ),
-    //         Material(
-    //           child: Container(
-    //             margin: EdgeInsets.symmetric(horizontal: 1.0),
-    //             child: IconButton(
-    //               icon: Icon(Icons.face),
-    //               onPressed: null,
-    //               color: Colors.indigo,
-    //             ),
-    //           ),
-    //           color: Colors.white,
-    //         ),
-
-    //         // Edit text
-    //         Flexible(
-    //           child: Container(
-    //             child: TextField(
-    //               style: TextStyle(color: Colors.indigo, fontSize: 15.0),
-    //               controller: inputController,
-    //               decoration: InputDecoration.collapsed(
-    //                 hintText: 'Type your message...',
-    //                 hintStyle: TextStyle(color: Colors.grey),
-    //               ),
-    //               focusNode: _focusNode,
-    //             ),
-    //           ),
-    //         ),
-
-    //         // Button send message
-    //         Material(
-    //           child: Container(
-    //             margin: EdgeInsets.symmetric(horizontal: 8.0),
-    //             child: IconButton(
-    //               icon: Icon(Icons.send),
-    //               onPressed: () => _send(Message(User('Felipinho'), inputController.text)),
-    //               color: Colors.indigo,
-    //             ),
-    //           ),
-    //           color: Colors.white,
-    //         ),
-    //       ],
-    //     ),
-    //     width: double.infinity,
-    //     height: 50.0,
-    //     decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.blueGrey, width: 0.5)), color: Colors.white),
-    //   );
   }
 }

@@ -14,7 +14,6 @@ class ChatPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final messagesProvider = Provider.of<MessagesProvider>(context);
 
-
     return Container(
       color: Colors.white38,
       // padding: EdgeInsets.all(10),

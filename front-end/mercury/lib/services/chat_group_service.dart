@@ -4,11 +4,13 @@ import 'gen/services/chat_group.pb.dart';
 import 'gen/services/chat_group.pbgrpc.dart';
 
 class ChatGroupService extends ServiceBase {
-  Future<CreateReply> requestCreate(String groupName) async {
+  Future<CreateReply> requestCreate(String groupName, List<int> usersId) async {
     final clientChannel = await setup.clientChannel;
     final client = ChatGroupClient(clientChannel);
 
-    var request = CreateRequest()..groupName = groupName..usersId.add(1);
+    var request = CreateRequest()
+      ..groupName = groupName.trim()
+      ..usersId.addAll(usersId);
 
     CreateReply reply;
     try {
