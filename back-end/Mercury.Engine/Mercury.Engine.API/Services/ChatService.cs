@@ -27,6 +27,7 @@ namespace Mercury.Engine.API.Services
             ServerCallContext context)
         {
             await requestStream.MoveNext();
+
             int userId = requestStream.Current.UserId;
 
             _subscriptionService.Add(userId, requestStream, replyStream);

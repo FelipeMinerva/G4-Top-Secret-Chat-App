@@ -1,9 +1,11 @@
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:grpc/grpc.dart';
+import 'package:mercury/singletons/connectivity_monitor.dart';
 
 class ServicesSetup {
   ChannelCredentials _channelCredentials;
   ClientChannel _clientChannel;
+  ConnectivityMonitor connectivityMonitor = ConnectivityMonitor();
 
   ServicesSetup._constructor();
 
@@ -18,6 +20,10 @@ class ServicesSetup {
       _channelCredentials = await _setupChannelCredentials();
 
     return _channelCredentials;
+  }
+
+  Future<void> resetChannel() async{
+    _clientChannel = null;
   }
 
   Future<ClientChannel> get clientChannel async {

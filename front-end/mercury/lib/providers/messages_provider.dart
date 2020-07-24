@@ -16,6 +16,9 @@ class MessagesProvider with ChangeNotifier {
 
   void sendMessage(int userId, MessageViewModel message) {
     try {
+      outputStream.onCancel =
+          () => outputStream = StreamController<SubscriptionRequest>();
+
       outputStream.add(SubscriptionRequest()
         ..userId = userId
         ..message = message.toProto());
