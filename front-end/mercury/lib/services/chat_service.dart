@@ -17,44 +17,46 @@ class ChatService extends ServiceBase {
     _clientChannelTimeStamp = DateTime.now();
   }
 
-  void _listenOutStream(StreamController<SubscriptionReply> request,
-      ResponseStream<SubscriptionReply> reply) {
-    reply.listen((message) {
-      request.add(message);
-    }).onError((err) {
-      print(DateTime.now().toString() + ' deu merda');
-    });
-  }
+  // void _listenOutStream(StreamController<SubscriptionReply> request,
+  //     ResponseStream<SubscriptionReply> reply) {
+  //   reply.listen((message) {
+  //     request.add(message);
+  //   }).onError((err) {
+  //     print(DateTime.now().toString() + ' deu merda');
+  //   });
+  // }
 
   Stream<SubscriptionReply> requestMessages(
       Stream<SubscriptionRequest> requestStream) async* {
     await _createChannel();
 
-    final requestBufferStream = new StreamController<SubscriptionReply>();
+    // final requestBufferStream = new StreamController<SubscriptionReply>();
 
     try {
       print(setup.connectivityMonitor.status);
       var reply = _client.subscribe(requestStream);
 
-      _listenOutStream(requestBufferStream, reply);
+      // _listenOutStream(requestBufferStream, reply);
 
       setup.connectivityMonitor.connectivity.onConnectivityChanged
           .listen((status) {
         if (status != ConnectivityResult.none) {
           setup.resetChannel();
-          _createChannel().then((_) {
-            reply = _client.subscribe(requestStream);
-            _listenOutStream(requestBufferStream, reply);
-          });
+          // _createChannel();
+          // .then((_) {
+          //   reply = _client.subscribe(requestStream);
+          // _listenOutStream(requestBufferStream, reply);
+          // }
+          // );
         }
       });
 
-      await for (var message in requestBufferStream.stream) {
+      await for (var message in reply) {
         yield message;
       }
     } catch (e) {
       print('Caught error: $e');
-      _createChannel();
+      // _createChannel();
     }
   }
 }

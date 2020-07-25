@@ -40,7 +40,7 @@ namespace Mercury.Engine.API.Services
         {
             await foreach (var item in requestStream.ReadAllAsync().ConfigureAwait(false))
             {
-                if (item.Message is null)
+                if (item.Message is null || string.IsNullOrEmpty(item.Message.Text))
                     return;
 
                 await Save(item.Message);

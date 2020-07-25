@@ -23,6 +23,7 @@ class ServicesSetup {
   }
 
   Future<void> resetChannel() async{
+    // _clientChannel.shutdown();
     _clientChannel = null;
   }
 
