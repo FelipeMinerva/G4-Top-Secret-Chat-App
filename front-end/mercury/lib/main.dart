@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mercury/providers/groups_provider.dart';
 import 'package:mercury/providers/messages_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
 import 'package:mercury/widgets/groups/groups_screen.dart';
@@ -7,6 +6,7 @@ import 'package:mercury/widgets/login/login_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/chat/chat_screen.dart';
+import 'widgets/groups/group_new.dart';
 
 void main() => runApp(MultiProvider(
       providers: [
@@ -45,6 +45,8 @@ class _MercuryState extends State<Mercury> {
             return _createRoute(ChatScreen(settings.arguments));
           case GroupsScreen.route:
             return _createRoute(GroupsScreen());
+            case GroupNew.route:
+            return _createRoute(GroupNew());
           default:
             return _createRoute(LoginScreen());
         }

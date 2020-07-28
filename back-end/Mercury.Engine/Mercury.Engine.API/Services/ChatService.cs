@@ -1,57 +1,90 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Mercury.Engine.API.DbContext.Entity;
 using Mercury.Engine.API.DbContext.UnitOfWork;
+using Mercury.Engine.API.Models.GrpcGenerated;
 using Mercury.Engine.API.Services.GrpcGenerated;
-using Microsoft.Extensions.Logging;
+using Mercury.Engine.API.Services.ServiceInterfaces;
 
 namespace Mercury.Engine.API.Services
 {
     public class ChatService : Chat.ChatBase
     {
-        private readonly ILogger<ChatService> _logger;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ISubscriptionService _subscriptionService;
 
-        public ChatService(ILogger<ChatService> logger, IUnitOfWork unitOfWork)
+        public ChatService(IUnitOfWork unitOfWork, ISubscriptionService subscriptionService)
         {
-            _logger = logger;
             _unitOfWork = unitOfWork;
+            _subscriptionService = subscriptionService;
         }
 
         public override async Task Subscribe(
-            SubscriptionRequest request,
-            IServerStreamWriter<SubscriptionReply> streamWriter,
+            IAsyncStreamReader<SubscriptionRequest> requestStream,
+            IServerStreamWriter<SubscriptionReply> replyStream,
             ServerCallContext context)
         {
-            var messages = _unitOfWork.TbMessageRepository.GetMessagesByUser(request.UserId).ConfigureAwait(false);
+            await requestStream.MoveNext();
+            int userId = requestStream.Current.UserId;
 
-            await foreach (var message in messages)
+            _subscriptionService.Add(userId, requestStream, replyStream);
+
+            await Recover(userId, replyStream);
+            await Listen(requestStream);
+        }
+
+        private async Task Listen(IAsyncStreamReader<SubscriptionRequest> requestStream)
+        {
+            await foreach (var item in requestStream.ReadAllAsync().ConfigureAwait(false))
             {
-                await streamWriter.WriteAsync(new SubscriptionReply
+                if (item.Message is null)
+                    return;
+
+                await Save(item.Message);
+
+                var users = new List<int>();
+                await foreach (var user in _unitOfWork.TbUserGroupRepository
+                    .GetAllUsersByGroupId(item.Message.GroupId, item.UserId)
+                    .ConfigureAwait(false))
+                    users.Add(user);
+
+                foreach (var reader in _subscriptionService.GetRangeByUserIds(users))
                 {
-                    Message = message
-                })
-                .ConfigureAwait(false);
+                    await reader.StreamWriter.WriteAsync(new SubscriptionReply { Message = item.Message }).ConfigureAwait(false);
+                }
             }
         }
 
-        public override async Task<PushReply> Push(PushRequest request, ServerCallContext context)
+        private async Task Recover(int userId, IServerStreamWriter<SubscriptionReply> replyStream)
         {
-            if (await _unitOfWork.TbGroupRepository.Find(request.Message.GroupId) is null)
-                return new PushReply { Acknowledged = false };
+            var messages = _unitOfWork.TbMessageRepository.GetMessagesByUser(userId);
 
-            await _unitOfWork.TbMessageRepository.Add(new TbMessage
+            await foreach (var message in messages)
             {
-                DtTimestamp = DateTime.Now,
-                FkGroup = request.Message.GroupId,
-                FkUser = request.Message.User.UserId,
-                TxMessage = request.Message.Text,
-            });
+                await replyStream.WriteAsync(new SubscriptionReply
+                {
+                    Message = message
+                });
+            }
+        }
 
-            _unitOfWork.Save();
+        private async Task Save(Message message)
+        {
+            if (await _unitOfWork.TbGroupRepository.Find(message.GroupId).ConfigureAwait(false) != null)
+            {
+                await _unitOfWork.TbMessageRepository.Add(new TbMessage
+                {
+                    DtTimestamp = DateTime.Now,
+                    FkGroup = message.GroupId,
+                    FkUser = message.User.UserId,
+                    TxMessage = message.Text,
+                })
+                  .ConfigureAwait(false);
 
-            return new PushReply { Acknowledged = true };
+                _unitOfWork.Save();
+            }
         }
 
     }

@@ -48,7 +48,8 @@ class _ChatInputState extends State<ChatInput> {
   }
 
   void _onSend({String messageText, BuildContext context}) {
-    final messagesProvider = Provider.of<MessagesProvider>(context, listen: false);
+    final messagesProvider =
+        Provider.of<MessagesProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     messageText = messageText.trim();
@@ -59,10 +60,8 @@ class _ChatInputState extends State<ChatInput> {
         groupId: _groupId,
         status: MessageStatus.pending);
 
-    final chatService = ChatService().push(message.toProto());
-
-    if (messageText.trim() != '' && chatService != null) {
-      messagesProvider.addMessage(message);
+    if (messageText.trim() != '') {
+      messagesProvider.sendMessage(userProvider.user.id, message);
       inputController.clear();
     }
   }

@@ -9,7 +9,7 @@ const SubscriptionRequest$json = const {
   '1': 'SubscriptionRequest',
   '2': const [
     const {'1': 'userId', '3': 1, '4': 1, '5': 5, '10': 'userId'},
-    const {'1': 'active', '3': 2, '4': 1, '5': 8, '10': 'active'},
+    const {'1': 'message', '3': 2, '4': 1, '5': 11, '6': '.system.Message', '10': 'message'},
   ],
 };
 
@@ -32,9 +32,5 @@ const PushReply$json = const {
   '2': const [
     const {'1': 'acknowledged', '3': 1, '4': 1, '5': 8, '10': 'acknowledged'},
   ],
-};
-
-const Close$json = const {
-  '1': 'Close',
 };
 

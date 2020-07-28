@@ -8,5 +8,6 @@ namespace Mercury.Engine.API.DbContext.Repositories.RepositoriesInterfaces
     {
         Task BulkInsertAsync(ICollection<int> members, int groupId);
         IAsyncEnumerable<TbGroup> GetGroupsByUserId(int userId);
+        IAsyncEnumerable<int> GetAllUsersByGroupId(int groupId, int? exceptUserId = null);
     }
 }

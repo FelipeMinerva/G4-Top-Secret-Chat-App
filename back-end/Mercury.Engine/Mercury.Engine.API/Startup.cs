@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Mercury.Engine.API.DbContext.UnitOfWork;
+using Mercury.Engine.API.Services.ServiceInterfaces;
 
 namespace Mercury.Engine.API
 {
@@ -34,6 +35,7 @@ namespace Mercury.Engine.API
                 options.UseNpgsql(Configuration.GetConnectionString("UserGroupDatabase")));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<ISubscriptionService, SubscriptionService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

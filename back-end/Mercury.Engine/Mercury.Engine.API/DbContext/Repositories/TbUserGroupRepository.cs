@@ -35,5 +35,18 @@ namespace Mercury.Engine.API.DbContext.Repositories
             await foreach (var item in result)
                 yield return item;
         }
+
+        public async IAsyncEnumerable<int> GetAllUsersByGroupId(int groupId, int? exceptUserId = null)
+        {
+            var query = _context.TbUserGroup.Where(z => z.FkGroup == groupId);
+
+            if (exceptUserId.HasValue)
+                query = query.Where(z => z.FkUser != exceptUserId);
+
+            var result = query.Select(z => z.FkUser).AsAsyncEnumerable();
+
+            await foreach (var item in result)
+                yield return item;
+        }
     }
 }

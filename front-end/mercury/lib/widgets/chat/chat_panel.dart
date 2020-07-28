@@ -13,8 +13,7 @@ class ChatPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final messagesProvider = Provider.of<MessagesProvider>(context);
-    // _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-    //     duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
+
 
     return Container(
       color: Colors.white38,

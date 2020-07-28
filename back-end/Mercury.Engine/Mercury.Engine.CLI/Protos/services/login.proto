@@ -1,19 +1,19 @@
 syntax = "proto3";
 
-option csharp_namespace = "Mercury.Engine.API.Services";
+option csharp_namespace = "Mercury.Engine.API.Services.GrpcGenerated";
+
+import "system/user.proto";
 
 package login;
 
 // The message service definition.
 service Login {
-    // Sends a greeting
     rpc RequestLogin (LoginRequest) returns (LoginReply);
-  }
+ }
   
   // The request message containing the user's name.
   message LoginRequest {
-    string userEmail = 1;
-    string userName = 2;
+    system.User user = 1;
   }
   
   // The response message containing the greetings.

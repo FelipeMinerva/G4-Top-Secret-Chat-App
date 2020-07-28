@@ -7,18 +7,24 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.12.3" />
+    <PackageReference Include="Grpc.Core.Api" Version="2.30.0" />
     <PackageReference Include="Grpc.Net.Client" Version="2.29.0" />
     <PackageReference Include="Grpc.Tools" Version="2.29.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup> 
+    </PackageReference> 
+  </ItemGroup>   
 
-  <ItemGroup>
-    <Protobuf Include="Protos\greet.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos\chat.proto" GrpcServices ="Client"/>
-    <Protobuf Include="Protos\sub.proto" GrpcServices ="Client"/>
-    <Protobuf Include="Protos\login.proto" GrpcServices ="Client"/>
-  </ItemGroup>
+  <ItemGroup>    
+    <Protobuf Include="Protos\services\login.proto" GrpcServices="Client" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\services\chat_group.proto" GrpcServices="Client" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\services\users.proto" GrpcServices="Client" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\services\chat.proto" GrpcServices="Client" ProtoRoot="Protos\" />  
+
+    <Protobuf Include="Protos\system\user.proto" GrpcServices="Client" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\system\message.proto" GrpcServices="Client" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\system\group.proto" GrpcServices="Client" ProtoRoot="Protos\" />
+ 
+  </ItemGroup>    
 
 </Project>

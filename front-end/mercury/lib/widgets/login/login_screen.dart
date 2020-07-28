@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mercury/models/message_view_model.dart';
 import 'package:mercury/models/user_view_model.dart';
 import 'package:mercury/providers/messages_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
@@ -28,7 +29,7 @@ class LoginScreen extends StatelessWidget {
         tag: _userTagController.text);
 
     _getMessages(
-      userId: userId,
+      user: userProvider.user,
       context: context,
       messagesProvider: messageProvider,
     );
@@ -40,8 +41,12 @@ class LoginScreen extends StatelessWidget {
   }
 
   void _getMessages(
-      {BuildContext context, MessagesProvider messagesProvider, int userId}) {
-    var messages = ChatService().requestMessages(userId);
+      {BuildContext context, MessagesProvider messagesProvider, UserViewModel user}) {
+    messagesProvider.sendMessage(
+        2, MessageViewModel.asSubscriptionSeed(user));
+
+    var messages = messagesProvider.service
+        .requestMessages(messagesProvider.outputStream.stream);
 
     messagesProvider.loadMessages(messages);
   }

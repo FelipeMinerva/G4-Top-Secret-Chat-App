@@ -29,10 +29,9 @@ class ChatClient extends $grpc.Client {
       : super(channel, options: options);
 
   $grpc.ResponseStream<$0.SubscriptionReply> subscribe(
-      $0.SubscriptionRequest request,
+      $async.Stream<$0.SubscriptionRequest> request,
       {$grpc.CallOptions options}) {
-    final call = $createCall(_$subscribe, $async.Stream.fromIterable([request]),
-        options: options);
+    final call = $createCall(_$subscribe, request, options: options);
     return $grpc.ResponseStream(call);
   }
 
@@ -51,8 +50,8 @@ abstract class ChatServiceBase extends $grpc.Service {
     $addMethod(
         $grpc.ServiceMethod<$0.SubscriptionRequest, $0.SubscriptionReply>(
             'Subscribe',
-            subscribe_Pre,
-            false,
+            subscribe,
+            true,
             true,
             ($core.List<$core.int> value) =>
                 $0.SubscriptionRequest.fromBuffer(value),
@@ -66,18 +65,13 @@ abstract class ChatServiceBase extends $grpc.Service {
         ($0.PushReply value) => value.writeToBuffer()));
   }
 
-  $async.Stream<$0.SubscriptionReply> subscribe_Pre($grpc.ServiceCall call,
-      $async.Future<$0.SubscriptionRequest> request) async* {
-    yield* subscribe(call, await request);
-  }
-
   $async.Future<$0.PushReply> push_Pre(
       $grpc.ServiceCall call, $async.Future<$0.PushRequest> request) async {
     return push(call, await request);
   }
 
   $async.Stream<$0.SubscriptionReply> subscribe(
-      $grpc.ServiceCall call, $0.SubscriptionRequest request);
+      $grpc.ServiceCall call, $async.Stream<$0.SubscriptionRequest> request);
   $async.Future<$0.PushReply> push(
       $grpc.ServiceCall call, $0.PushRequest request);
 }

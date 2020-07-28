@@ -8,14 +8,13 @@ package chat;
 
 // The chat service definition.
 service Chat {
-    rpc Subscribe(SubscriptionRequest) returns (stream SubscriptionReply);
-    rpc Push(PushRequest) returns (PushReply);
+    rpc Subscribe(stream SubscriptionRequest) returns (stream SubscriptionReply);
 }
 
-// Object used to create the connection. It carries the user and if that user is active
+// Object used to create the connection. It carries the user
 message SubscriptionRequest {
-    int32 userId = 1; 
-    bool active = 2;
+    int32 userId = 1;
+    system.Message  message = 2;
 }
 
 // The response message
@@ -23,12 +22,10 @@ message SubscriptionReply {
     system.Message message = 1;
 }
 
-message PushRequest {
-    system.Message message = 1; 
+message Open {
+    int32 userId = 1;
 }
 
-message PushReply {
-    bool acknowledged = 1;
-}
+message Close {
 
-message Close{ }
+}

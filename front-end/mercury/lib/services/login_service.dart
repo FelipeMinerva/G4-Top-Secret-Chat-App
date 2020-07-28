@@ -15,7 +15,7 @@ class LoginService extends ServiceBase {
       ),
     );
 
-    var request = LoginRequest()
+    var request = LoginRequest() 
       ..user = User()
       ..user.userTag = userTag
       ..user.userEmail = userEmail;
