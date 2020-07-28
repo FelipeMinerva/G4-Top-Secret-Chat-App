@@ -21,16 +21,6 @@ namespace Mercury.Engine.CLI
             //var channel = GrpcChannel.ForAddress(new UriBuilder("https://127.0.0.1:5001").Uri);
             var channel = GrpcChannel.ForAddress("https://localhost:5001");
 
-
-
-            // Message streaming test
-            //var subClient = new Subscribe.SubscribeClient(channel);
-            //var response = subClient.Subscribe(
-            //    new SubRequest()
-            //    {
-            //        User = new User() { UserId = loginResponse.UserId, UserName = "Carolina" }
-            //    });
-
             var client = new Chat.ChatClient(channel);
 
             var request = client.Subscribe();
@@ -66,7 +56,7 @@ namespace Mercury.Engine.CLI
                         Timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd hh:mm:ss")
                     },
                     UserId = 1
-                }); ;
+                });
             }
 
             Console.WriteLine("Disconnecting");

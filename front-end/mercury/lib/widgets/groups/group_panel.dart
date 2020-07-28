@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mercury/models/group_view_model.dart';
 import 'package:mercury/providers/groups_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
 import 'package:mercury/widgets/groups/group.dart';
+import 'package:mercury/widgets/groups/group_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:mercury/services/chat_group_service.dart';
 
-import 'group_new.dart';
+// import 'group_new.dart';
 
 class GroupPanel extends StatefulWidget {
   @override
@@ -30,26 +30,20 @@ class _GroupPanelState extends State<GroupPanel> {
     super.didChangeDependencies();
   }
 
-  void _createGroup(String groupName, GroupsProvider groupsProvider) async {
-    final groupCreateReply = await ChatGroupService().requestCreate(groupName);
-
-    if (groupCreateReply != null)
-      groupsProvider.addGroup(GroupViewModel(
-        groupId: groupCreateReply.groupId,
-        groupName: groupName,
-      ));
-  }
-
-  void _navigateToNewGroupScreen(BuildContext context) {
-    Navigator.of(context).pushNamed(GroupNew.route);
-  }
-
   void _getGroups() async {
     final groups =
         ChatGroupService().requestGroupsByUserId(_userProvider.user.id);
 
     _groupsProvider.loadGroups(groups);
     _hasLoadedGroups = true;
+  }
+
+  void _showNewGroupBottomSheet() {
+    showBottomSheet(
+        context: context,
+        builder: (context) {
+          return GroupBottomSheet();
+        });
   }
 
   @override
@@ -76,7 +70,7 @@ class _GroupPanelState extends State<GroupPanel> {
                 ],
         ),
         floatingActionButton: new FloatingActionButton(
-          onPressed: () => _navigateToNewGroupScreen(context),
+          onPressed: () => _showNewGroupBottomSheet(),
           child: Icon(Icons.add),
           backgroundColor: Colors.indigo,
         ),

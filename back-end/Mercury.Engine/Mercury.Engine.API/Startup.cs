@@ -44,7 +44,6 @@ namespace Mercury.Engine.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
             }
             app.UseRouting();
 

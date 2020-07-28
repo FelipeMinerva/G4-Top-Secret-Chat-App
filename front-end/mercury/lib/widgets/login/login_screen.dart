@@ -3,7 +3,6 @@ import 'package:mercury/models/message_view_model.dart';
 import 'package:mercury/models/user_view_model.dart';
 import 'package:mercury/providers/messages_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
-import 'package:mercury/services/chat_service.dart';
 import 'package:mercury/services/login_service.dart';
 import 'package:mercury/widgets/groups/groups_screen.dart';
 import 'package:provider/provider.dart';
