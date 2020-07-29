@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:mercury/singletons/services_setup.dart';
 
-class ServiceBase{
+abstract class ServiceBase {
+  @protected
   final setup = ServicesSetup();
 }

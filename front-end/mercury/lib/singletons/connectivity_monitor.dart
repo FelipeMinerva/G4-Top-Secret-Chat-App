@@ -19,17 +19,11 @@ class ConnectivityMonitor {
   static final ConnectivityMonitor _instance =
       ConnectivityMonitor._constructor();
 
-  factory ConnectivityMonitor() {
-    return _instance;
-  }
+  factory ConnectivityMonitor() => _instance;
 
-  String get status {
-    return _connectionStatus.toString();
-  }
+  String get status => _connectionStatus.toString();
 
-  Connectivity get connectivity{
-    return _connectivity;
-  }
+  Connectivity get connectivity => _connectivity;
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initConnectivity() async {

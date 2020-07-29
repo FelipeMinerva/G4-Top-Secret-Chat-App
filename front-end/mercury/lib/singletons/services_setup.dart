@@ -1,19 +1,21 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:grpc/grpc.dart';
 import 'package:mercury/singletons/connectivity_monitor.dart';
 
 class ServicesSetup {
-  ChannelCredentials _channelCredentials;
-  ClientChannel _clientChannel;
   ConnectivityMonitor connectivityMonitor = ConnectivityMonitor();
 
-  ServicesSetup._constructor();
+  ChannelCredentials _channelCredentials;
+  ClientChannel _clientChannel;
+
+  ServicesSetup._constructor() {
+    _resetChannelOnConnectivityLoss();
+  }
 
   static final ServicesSetup _instance = ServicesSetup._constructor();
 
-  factory ServicesSetup() {
-    return _instance;
-  }
+  factory ServicesSetup() => _instance;
 
   Future<ChannelCredentials> get channelCredentials async {
     if (_channelCredentials == null)
@@ -22,9 +24,12 @@ class ServicesSetup {
     return _channelCredentials;
   }
 
-  Future<void> resetChannel() async{
-    // _clientChannel.shutdown();
-    _clientChannel = null;
+  void _resetChannelOnConnectivityLoss() {
+    connectivityMonitor.connectivity.onConnectivityChanged.listen((status) {
+      if (status != ConnectivityResult.none) {
+        _clientChannel = null;
+      }
+    });
   }
 
   Future<ClientChannel> get clientChannel async {
