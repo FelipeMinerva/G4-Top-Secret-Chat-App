@@ -7,6 +7,11 @@ class UserViewModel {
 
   UserViewModel({this.email, this.id, this.tag});
 
+  UserViewModel.simple(this.id){
+    this.email = '';
+    this.tag = '';
+  }
+
   UserViewModel.fromModel(UserViewModel user) {
     this.id = user.id;
     this.email = user.email;

@@ -25,12 +25,12 @@ namespace Mercury.Engine.API.Services
 
         public void Add(int userId, IAsyncStreamReader<SubscriptionRequest> request, IServerStreamWriter<SubscriptionReply> reply)
         {
-            var ledger = SubscriptionLedger.FirstOrDefault(z => z.UserId == userId);
+            var sub = SubscriptionLedger.FirstOrDefault(z => z.UserId == userId);
 
-            if (ledger != null)
-                ledger = new SubscriptionContainer { UserId = userId, StreamReader = request, StreamWriter = reply };
+            if (sub != null)
+                sub = new SubscriptionContainer { UserId = userId, StreamReader = request, StreamWriter = reply };
             else
-            _subscriptionLegder.Add(new SubscriptionContainer { UserId = userId, StreamReader = request, StreamWriter = reply });
+                _subscriptionLegder.Add(new SubscriptionContainer { UserId = userId, StreamReader = request, StreamWriter = reply });
         }
 
         public IServerStreamWriter<SubscriptionReply> GetStreamWriterByUserId(int userId)
@@ -41,6 +41,6 @@ namespace Mercury.Engine.API.Services
 
         public SubscriptionContainer GetByUserId(int userId) => SubscriptionLedger.FirstOrDefault(z => z.UserId == userId);
 
-        public IEnumerable<SubscriptionContainer> GetRangeByUserIds(ICollection<int> userIds) => SubscriptionLedger.Where(z => userIds.Contains(z.UserId));
+        public IEnumerable<SubscriptionContainer> GetRangeByUserIds(IEnumerable<int> userIds) => SubscriptionLedger.Where(z => userIds.Contains(z.UserId));
     }
 }

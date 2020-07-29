@@ -46,6 +46,7 @@ namespace Mercury.Engine.API
                 app.UseDeveloperExceptionPage();
             }
             app.UseRouting();
+            
 
             app.UseEndpoints(endpoints =>
             {

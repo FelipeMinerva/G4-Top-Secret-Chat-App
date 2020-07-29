@@ -27,6 +27,7 @@ namespace Mercury.Engine.API.Services
             ServerCallContext context)
         {
             await requestStream.MoveNext();
+
             int userId = requestStream.Current.UserId;
 
             _subscriptionService.Add(userId, requestStream, replyStream);
@@ -35,20 +36,16 @@ namespace Mercury.Engine.API.Services
             await Listen(requestStream);
         }
 
-        private async Task Listen(IAsyncStreamReader<SubscriptionRequest> requestStream)
+        private async ValueTask Listen(IAsyncStreamReader<SubscriptionRequest> requestStream)
         {
             await foreach (var item in requestStream.ReadAllAsync().ConfigureAwait(false))
             {
-                if (item.Message is null)
+                if (item.Message is null || string.IsNullOrEmpty(item.Message.Text))
                     return;
 
                 await Save(item.Message);
 
-                var users = new List<int>();
-                await foreach (var user in _unitOfWork.TbUserGroupRepository
-                    .GetAllUsersByGroupId(item.Message.GroupId, item.UserId)
-                    .ConfigureAwait(false))
-                    users.Add(user);
+                var users = _unitOfWork.TbUserGroupRepository.GetAllUsersByGroupId(item.Message.GroupId, item.UserId);
 
                 foreach (var reader in _subscriptionService.GetRangeByUserIds(users))
                 {
@@ -63,10 +60,7 @@ namespace Mercury.Engine.API.Services
 
             await foreach (var message in messages)
             {
-                await replyStream.WriteAsync(new SubscriptionReply
-                {
-                    Message = message
-                });
+                await replyStream.WriteAsync(new SubscriptionReply { Message = message });
             }
         }
 

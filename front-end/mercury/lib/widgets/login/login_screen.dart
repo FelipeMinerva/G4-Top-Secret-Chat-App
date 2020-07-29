@@ -39,10 +39,12 @@ class LoginScreen extends StatelessWidget {
     Navigator.of(context).pushNamed(GroupsScreen.route);
   }
 
-  void _getMessages(
-      {BuildContext context, MessagesProvider messagesProvider, UserViewModel user}) {
-    messagesProvider.sendMessage(
-        2, MessageViewModel.asSubscriptionSeed(user));
+  void _getMessages({
+    BuildContext context,
+    MessagesProvider messagesProvider,
+    UserViewModel user,
+  }) {
+    messagesProvider.sendMessage(2, MessageViewModel.asSubscriptionSeed(user));
 
     var messages = messagesProvider.service
         .requestMessages(messagesProvider.outputStream.stream);

@@ -9,7 +9,7 @@ namespace Mercury.Engine.API.Services.ServiceInterfaces
     {
         void Add(int userId, IAsyncStreamReader<SubscriptionRequest> request, IServerStreamWriter<SubscriptionReply> reply);
         SubscriptionContainer GetByUserId(int userId);
-        IEnumerable<SubscriptionContainer> GetRangeByUserIds(ICollection<int> userIds);
+        IEnumerable<SubscriptionContainer> GetRangeByUserIds(IEnumerable<int> userIds);
         IAsyncStreamReader<SubscriptionRequest> GetStreamReaderByUserId(int userId);
         IServerStreamWriter<SubscriptionReply> GetStreamWriterByUserId(int userId);
     }

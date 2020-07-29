@@ -7,15 +7,9 @@ import 'gen/services/login.pbgrpc.dart';
 class LoginService extends ServiceBase {
   Future<int> requestLogin(String userEmail, String userTag) async {
     final clientChannel = await setup.clientChannel;
+    final client = LoginClient(clientChannel);
 
-    final client = LoginClient(
-      clientChannel,
-      options: CallOptions(
-        timeout: Duration(seconds: 30),
-      ),
-    );
-
-    var request = LoginRequest() 
+    var request = LoginRequest()
       ..user = User()
       ..user.userTag = userTag
       ..user.userEmail = userEmail;
@@ -28,7 +22,6 @@ class LoginService extends ServiceBase {
       print('Caught error: $e');
     }
 
-    // await clientChannel.shutdown();
     return -1;
   }
 }
