@@ -27,11 +27,7 @@ namespace Mercury.Engine.API
                     webBuilder.UseStartup<Startup>();
                     webBuilder.ConfigureKestrel(kestrel =>
                     {
-                        // kestrel.Listen(IPAddress.Any, 5001, listenOptions =>
-                        // {
-                        //     listenOptions.Protocols = HttpProtocols.Http2;
-                        //     listenOptions.UseHttps("aspnetapp.pfx","crypticmorgana");
-                        // });
+                       
                     });
                 });
     }

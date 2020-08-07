@@ -4,6 +4,7 @@ import 'package:mercury/providers/user_provider.dart';
 import 'package:mercury/widgets/groups/groups_screen.dart';
 import 'package:mercury/widgets/login/login_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'widgets/chat/chat_screen.dart';
 
@@ -30,11 +31,6 @@ class _MercuryState extends State<Mercury> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // routes: {
-      //   '/': (context) => LoginScreen(),
-      //   ChatScreen.route: (context) => ChatScreen(),
-      //   GroupsScreen.route: (context) => GroupsScreen(),
-      // },
       showPerformanceOverlay: false,
       onGenerateRoute: (settings) {
         switch (settings.name) {
@@ -44,8 +40,8 @@ class _MercuryState extends State<Mercury> {
             return _createRoute(ChatScreen(settings.arguments));
           case GroupsScreen.route:
             return _createRoute(GroupsScreen());
-            // case GroupNew.route:
-            // return _createRoute(GroupNew(settings.arguments));
+          // case GroupNew.route:
+          // return _createRoute(GroupNew(settings.arguments));
           default:
             return _createRoute(LoginScreen());
         }
@@ -70,5 +66,19 @@ class _MercuryState extends State<Mercury> {
         );
       },
     );
+  }
+
+  void _checkOpenSession() async {
+    final userProvider = Provider.of<UserProvider>(context);
+
+    final prefs = await SharedPreferences.getInstance();
+
+    final userEmail = prefs.getString('user_email');
+    final userTag = prefs.getString('user_tag');
+
+    if (userEmail != null && userTag != null) {
+      userProvider.user.email = userEmail;
+      userProvider.user.tag = userTag;
+    }
   }
 }
