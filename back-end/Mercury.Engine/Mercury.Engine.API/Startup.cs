@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Mercury.Engine.API.DbContext;
+﻿using Mercury.Engine.API.DbContext;
+using Mercury.Engine.API.DbContext.UnitOfWork;
 using Mercury.Engine.API.Services;
+using Mercury.Engine.API.Services.ServiceInterfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
-using Mercury.Engine.API.DbContext.UnitOfWork;
-using Mercury.Engine.API.Services.ServiceInterfaces;
 
 namespace Mercury.Engine.API
 {
@@ -45,8 +41,8 @@ namespace Mercury.Engine.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseRouting();
-            
 
             app.UseEndpoints(endpoints =>
             {
