@@ -13,6 +13,7 @@ class UserViewModel {
   }
 
   UserViewModel.fromModel(UserViewModel user) {
+    if(user == null) return;
     this.id = user.id;
     this.email = user.email;
     this.tag = user.tag;

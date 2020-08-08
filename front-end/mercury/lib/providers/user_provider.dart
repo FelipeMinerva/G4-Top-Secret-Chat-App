@@ -12,13 +12,12 @@ class UserProvider with ChangeNotifier {
 
   set user(UserViewModel user) {
     _user = UserViewModel.fromModel(user);
+    save(user);
     notifyListeners();
   }
 
   Future<int> checkOpenSession() async {
     final prefs = await SharedPreferences.getInstance();
-
-    await save();
 
     final userEmail = prefs.getString('user_email');
     final userTag = prefs.getString('user_tag');
@@ -33,11 +32,11 @@ class UserProvider with ChangeNotifier {
     return userId ?? 0;
   }
 
-  Future<void> save() async{
+  Future<void> save(UserViewModel user) async {
     final prefs = await SharedPreferences.getInstance();
 
-    prefs.setInt('user_id', 2);
-    prefs.setString('user_email', 'carolina@mercury.com');
-    prefs.setString('user_tag', 'tassol');
+    prefs.setInt('user_id', user.id);
+    prefs.setString('user_email', user.email);
+    prefs.setString('user_tag', user.tag);
   }
 }
