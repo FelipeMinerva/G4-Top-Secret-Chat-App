@@ -23,7 +23,7 @@ class _GroupBottomSheetState extends State<GroupBottomSheet> {
       color: Colors.transparent,
       child: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).canvasColor,
+          color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(10),
             topRight: const Radius.circular(10),
@@ -77,9 +77,11 @@ class _GroupBottomSheetState extends State<GroupBottomSheet> {
                     ),
                     color: Colors.indigo,
                     disabledColor: Colors.grey,
-                    onPressed: _groupNameController.text.length < 1
-                        ? null
-                        : () => {
+                    onPressed: 
+                    // _groupNameController.text.length < 1
+                        // ? null
+                        // : 
+                        () => {
                               _createGroup(
                                   groupName: _groupNameController.text,
                                   usersId: <int>[userProvider.user.id],

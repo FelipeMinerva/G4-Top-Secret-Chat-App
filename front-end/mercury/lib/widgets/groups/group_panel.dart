@@ -3,6 +3,7 @@ import 'package:mercury/providers/groups_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
 import 'package:mercury/widgets/groups/group.dart';
 import 'package:mercury/widgets/groups/group_bottom_sheet.dart';
+import 'package:mercury/widgets/groups/group_create/group_create_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:mercury/services/chat_group_service.dart';
 
@@ -46,6 +47,9 @@ class _GroupPanelState extends State<GroupPanel> {
         });
   }
 
+  void _navigateToCreateGroupScreen() =>
+      Navigator.of(context).pushNamed(CreateGroupScreen.route);
+
   @override
   Widget build(BuildContext context) {
     final groupsProvider = Provider.of<GroupsProvider>(context);
@@ -70,7 +74,7 @@ class _GroupPanelState extends State<GroupPanel> {
                 ],
         ),
         floatingActionButton: new FloatingActionButton(
-          onPressed: () => _showNewGroupBottomSheet(),
+          onPressed: () => _navigateToCreateGroupScreen(),
           child: Icon(Icons.add),
           backgroundColor: Colors.indigo,
         ),
