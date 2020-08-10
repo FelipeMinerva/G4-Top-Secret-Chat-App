@@ -34,7 +34,7 @@ class _GroupPanelState extends State<GroupPanel> {
     final groups =
         ChatGroupService().requestGroupsByUserId(_userProvider.user.id);
 
-    _groupsProvider.loadGroups(groups);
+    _groupsProvider.load(groups);
     _hasLoadedGroups = true;
   }
 

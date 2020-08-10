@@ -109,6 +109,6 @@ class _GroupBottomSheetState extends State<GroupBottomSheet> {
         await groupsProvider.service.requestCreate(groupName, usersId);
 
     groupsProvider
-        .addGroup(GroupViewModel(groupId: group.groupId, groupName: groupName));
+        .add(GroupViewModel(groupId: group.groupId, groupName: groupName));
   }
 }

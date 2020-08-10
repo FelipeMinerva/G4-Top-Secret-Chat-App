@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mercury/providers/messages_provider.dart';
 import 'package:mercury/providers/user_provider.dart';
-import 'package:mercury/widgets/groups/group_create/group_create_screen.dart';
+// import 'package:mercury/widgets/groups/group_create/group_create_screen.dart';
 import 'package:mercury/widgets/groups/groups_screen.dart';
 import 'package:mercury/widgets/home/home_screen.dart';
 import 'package:mercury/widgets/login/login_screen.dart';
@@ -58,8 +58,8 @@ Route _generateRoutes(RouteSettings settings) {
       return _createRoute(ChatScreen(settings.arguments));
     case GroupsScreen.route:
       return _createRoute(GroupsScreen());
-    case CreateGroupScreen.route:
-      return _createRoute(CreateGroupScreen());
+    // case CreateGroupScreen.route:
+      // return _createRoute(CreateGroupScreen());
     default:
       return _createRoute(LoginScreen());
   }
