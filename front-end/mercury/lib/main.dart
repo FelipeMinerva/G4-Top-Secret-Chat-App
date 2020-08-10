@@ -36,6 +36,7 @@ class _MercuryState extends State<Mercury> {
       onGenerateRoute: _generateRoutes,
       theme: ThemeData(
           primarySwatch: Colors.indigo,
+          primaryColor: Colors.indigo,
           accentColor: Colors.indigoAccent,
           canvasColor: Colors.white,
           textTheme: TextTheme(

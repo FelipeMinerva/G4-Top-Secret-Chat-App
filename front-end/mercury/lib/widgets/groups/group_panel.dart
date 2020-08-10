@@ -31,20 +31,12 @@ class _GroupPanelState extends State<GroupPanel> {
     super.didChangeDependencies();
   }
 
-  void _getGroups() async {
+  void _getGroups() {
     final groups =
         ChatGroupService().requestGroupsByUserId(_userProvider.user.id);
 
     _groupsProvider.load(groups);
     _hasLoadedGroups = true;
-  }
-
-  void _showNewGroupBottomSheet() {
-    showBottomSheet(
-        context: context,
-        builder: (context) {
-          return GroupBottomSheet();
-        });
   }
 
   void _navigateToCreateGroupScreen() =>
