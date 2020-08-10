@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:grpc/grpc.dart';
 import 'package:mercury/services/gen/system/user.pb.dart';
 import 'package:mercury/services/service_base.dart';
 import 'gen/services/login.pbgrpc.dart';
@@ -22,6 +21,7 @@ class LoginService extends ServiceBase {
       print('Caught error: $e');
     }
 
+    print('login failed');
     return -1;
   }
 }

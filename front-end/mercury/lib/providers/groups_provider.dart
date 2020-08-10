@@ -13,14 +13,14 @@ class GroupsProvider with ChangeNotifier {
     return [..._groups];
   }
 
-  Future<void> loadGroups(Stream<GetGroupsByUserReply> groups) async {
+  Future<void> load(Stream<GetGroupsByUserReply> groups) async {
     _groups = List<GroupViewModel>();
-    groups.listen((group) => addGroup(GroupViewModel.fromProto(group.group)));
+    groups.listen((group) => add(GroupViewModel.fromProto(group.group)));
 
     notifyListeners();
   }
 
-  void addGroup(GroupViewModel group) {
+  void add(GroupViewModel group) {
     _groups.add(group);
     notifyListeners();
   }

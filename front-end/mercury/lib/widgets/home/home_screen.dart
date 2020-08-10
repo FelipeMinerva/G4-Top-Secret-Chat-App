@@ -14,22 +14,20 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
     return FutureBuilder<int>(
-      future: Provider.of<UserProvider>(context).checkOpenSession(),
+      future: userProvider.checkOpenSession(),
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) =>
-          _build(snapshot),
+          _build(snapshot, userProvider),
     );
   }
 
-  Widget _build(AsyncSnapshot<int> snapshot) {
+  Widget _build(AsyncSnapshot<int> snapshot, UserProvider userProvider) {
     if (snapshot.hasData) {
-      final user = Provider.of<UserProvider>(context).user;
-      if (user.id != null)
-        // Navigator.of(context).pushNamed(GroupsScreen.route);
-        return GroupsScreen();
-      else
-        // Navigator.of(context).pushNamed(LoginScreen.route);
-        return LoginScreen();
+      final user = userProvider.user;
+      if (user.id != null) return GroupsScreen();
+      return LoginScreen();
     } else if (snapshot.hasError) {
       return Center(
         child: Column(

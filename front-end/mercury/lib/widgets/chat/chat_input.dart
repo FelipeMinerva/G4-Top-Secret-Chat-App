@@ -60,7 +60,7 @@ class _ChatInputState extends State<ChatInput> {
         status: MessageStatus.pending);
 
     if (messageText.trim() != '') {
-      messagesProvider.sendMessage(userProvider.user.id, message);
+      messagesProvider.send(message);
       inputController.clear();
     }
   }
@@ -83,7 +83,7 @@ class _ChatInputState extends State<ChatInput> {
               child: IconButton(
                 icon: Icon(Icons.image),
                 onPressed: null,
-                color: Colors.indigo,
+                color: Theme.of(context).primaryColor,
               ),
             ),
             color: Colors.white,
@@ -126,7 +126,7 @@ class _ChatInputState extends State<ChatInput> {
                         context: context,
                         messageText: inputController.text,
                       ),
-                color: Colors.indigo,
+                color: Theme.of(context).primaryColor,
               ),
             ),
             color: Colors.white,

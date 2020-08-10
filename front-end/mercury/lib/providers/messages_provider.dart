@@ -16,27 +16,31 @@ class MessagesProvider with ChangeNotifier {
 
   final connectivityMonitor = ConnectivityMonitor();
 
-  List<MessageViewModel> get messages {
-    return [..._messages];
+  List<MessageViewModel> get messages => [..._messages];
+
+  void open(UserViewModel user) {
+    send(MessageViewModel.asSubscriptionSeed(user));
+    final messages = service.requestMessages(outputStream.stream);
+    load(messages);
   }
 
-  void sendMessage(int userId, MessageViewModel message) {
+  void send(MessageViewModel message) {
     try {
       outputStream.onCancel = () {
         connectivityMonitor.connectivity.onConnectivityChanged.listen((status) {
           if (status != ConnectivityResult.none) {
             outputStream = StreamController<SubscriptionRequest>();
-            loadMessages(service.requestMessages(outputStream.stream));
-            _createStreamSeed(userId);
+            load(service.requestMessages(outputStream.stream));
+            _createStreamSeed(message.user.id);
           }
         });
       };
 
       outputStream.add(SubscriptionRequest()
-        ..userId = userId
+        ..userId = message.user.id
         ..message = message.toProto());
 
-      if (message != null) addMessage(message);
+      if (message != null) add(message);
     } catch (e) {
       print(e);
       service = ChatService();
@@ -53,15 +57,15 @@ class MessagesProvider with ChangeNotifier {
               .toProto());
   }
 
-  void addMessage(MessageViewModel message) {
+  void add(MessageViewModel message) {
     _messages.add(message);
 
     notifyListeners();
   }
 
-  Future<void> loadMessages(Stream<SubscriptionReply> messages) async {
+  Future<void> load(Stream<SubscriptionReply> messages) async {
     _messages = List<MessageViewModel>();
-    messages.listen(
-        (message) => addMessage(MessageViewModel.fromProto(message.message)));
+    messages
+        .listen((message) => add(MessageViewModel.fromProto(message.message)));
   }
 }

@@ -22,34 +22,27 @@ class LoginScreen extends StatelessWidget {
     final userId = await LoginService()
         .requestLogin(_userEmailController.text, _userTagController.text);
 
+    if (userId == -1) return;
+
     userProvider.user = UserViewModel(
         id: userId,
         email: _userEmailController.text,
         tag: _userTagController.text);
 
-    _getMessages(
-      user: userProvider.user,
-      context: context,
-      messagesProvider: messageProvider,
-    );
+    // messageProvider.open(userProvider.user);
+
     _navigateToGroupsScreen(context);
   }
 
-  void _navigateToGroupsScreen(BuildContext context) {
-    Navigator.of(context).pushNamed(GroupsScreen.route);
-  }
+  void _navigateToGroupsScreen(BuildContext context) =>
+      Navigator.of(context).pushNamed(GroupsScreen.route);
 
   void _getMessages({
     BuildContext context,
     MessagesProvider messagesProvider,
     UserViewModel user,
   }) {
-    messagesProvider.sendMessage(2, MessageViewModel.asSubscriptionSeed(user));
-
-    var messages = messagesProvider.service
-        .requestMessages(messagesProvider.outputStream.stream);
-
-    messagesProvider.loadMessages(messages);
+    messagesProvider.open(user);
   }
 
   @override
